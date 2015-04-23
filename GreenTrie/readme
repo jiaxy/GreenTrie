@@ -3,7 +3,7 @@
 1. Introduction
 ########################
 
-This artifact is the source code of constraint solution reuse framework GreenTrie, which is mentioned in the paper "Enhancing Reuse of Constraint Solutions to Improve Symbolic Execution".
+This artifact is the source code of constraint solution reuse framework GreenTrie, which is described in the paper "Enhancing Reuse of Constraint Solutions to Improve Symbolic Execution".
 GreenTrie is an extension to the Green framework, and it supports constraint reuse based on the logical implication relations among constraints. GreenTrie stores constraints and solutions into tries, indexed by an implication partial order graph of constraints. It is able to carry out logical reduction and logical subset and superset querying for given constraints,to check for reuse of previously solved constraints. 
 This artifact can reproduce all the experiment results in the paper.
 
@@ -52,10 +52,10 @@ This artifact includes an Eclipse project, which can be imported into Eclipse to
 	
 	  
  ##########################################
-4.  Use GreenTrie in symbolic execution
+4.  Use GreenTrie in Symbolic Pathfinder
 ##########################################
 
-In order to use GreenTrie in symbolic execution, we need some configuration items for program's jpf file. 
+In order to use GreenTrie in Symbolic Pathfinder, we need some configuration items for program's jpf file. 
 As shown in the folder, the program Bintree has a configuration file BinTree.jpf, which contains some properties for Green/GreenTrie frameworks.
 
 		symbolic.green = true
@@ -73,7 +73,7 @@ As shown in the folder, the program Bintree has a configuration file BinTree.jpf
  (1)"green.store" should be set as "gov.nasa.jpf.symbc.green.trie.TrieStore". 
  (2)"green.service.sat.canonize" should be set as "za.ac.sun.cs.green.service.canonizer.SATCanonizerService". 
  
-And them, if we start a symbolic execution with this jpf file, GreenTrie Framework is put into use for caching and reusing the constraint solutions.
+If we start a symbolic execution with this jpf file, GreenTrie Framework is used for caching and reusing the constraint solutions.
 
 
 
