@@ -1,0 +1,29 @@
+target = MerArbiter.MerArbiterSym
+
+classpath = ${jpf-memoise}/build/examples
+sourcepath = ${jpf-memoise}/src/examples
+
+symbolic.method = MerArbiter.MerArbiterSym.setUser1Input(sym#sym),MerArbiter.MerArbiterSym.setUser2Input(sym#sym),MerArbiter.MerArbiterSym.flag(sym)
+
+symbolic.minint=0
+symbolic.maxint=4
+vm.storage.class=nil
+
+#listener=gov.nasa.jpf.memoization.listener.TrieBuilder
+#listener=gov.nasa.jpf.memoization.listener.SolverCallListener
+#listener=gov.nasa.jpf.memoization.listener.IDListener
+
+memoise.if_compact=false
+
+#memoise.old_trie_name=trie_init.dat
+#memoise.new_trie_name=trie_id.dat
+
+#max_depth=47
+#max_depth=36 w/o sequence listener
+
+search.depth_limit=30
+
+#report.console.file=IDResults/report_MER_ID_29_30_p.txt
+#report.console.file=IDResults/report_MER_ID_29_30_c.txt
+#report.console.file=IDResults/report_MER_BUILD_29.txt
+#report.console.file=IDResults/report_MER_REGULAR_24.txt

@@ -1,0 +1,30 @@
+target = MerArbiter.MerArbiterSym
+
+classpath = ${jpf-memoise}/build/examples
+sourcepath = ${jpf-memoise}/src/examples
+
+symbolic.method = MerArbiter.MerArbiterSym.setUser1Input(sym#sym),MerArbiter.MerArbiterSym.setUser2Input(sym#sym),MerArbiter.MerArbiterSym.flag(sym)
+
+#coverage.include=MerArbiter.*
+coverage.show_methods=true
+coverage.include=MerArbiter.TopLevelArbiter*
+coverage.show_bodies=true
+
+symbolic.minint=0
+symbolic.maxint=4
+vm.storage.class=nil
+
+#listener=gov.nasa.jpf.memoization.listener.TrieBuilder,gov.nasa.jpf.listener.CoverageAnalyzer
+#listener=gov.nasa.jpf.memoization.listener.HRListener_RC_C,gov.nasa.jpf.listener.CoverageAnalyzer
+#listener=gov.nasa.jpf.memoization.listener.SolverCallListener,gov.nasa.jpf.listener.CoverageAnalyzer
+
+search.depth_limit=30
+
+targetClass=MerArbiter.TopLevelArbiter
+
+#memoise.old_trie_name=trie_init.dat
+#memoise.new_trie_name=trie_id.dat
+
+#report.console.file=HRResults/report_MER_hr_regular_30.txt
+#report.console.file=HRResults/report_MER_hr_build_25.txt
+#report.console.file=HRResults/report_MER_hr_25_30.txt

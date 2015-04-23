@@ -1,0 +1,37 @@
+target = MerArbiter.MerArbiterSym
+
+classpath = ${jpf-memoise}/build/examples
+sourcepath = ${jpf-memoise}/src/examples
+
+symbolic.method = MerArbiter.MerArbiterSym.setUser1Input(sym#sym),MerArbiter.MerArbiterSym.setUser2Input(sym#sym),MerArbiter.MerArbiterSym.flag(sym)
+#symbolic.method=MerArbiter.MerArbiterSym.flag(sym)
+
+coverage.include=MerArbiter.*
+coverage.show_methods=true
+coverage.show_bodies=true
+#listener=gov.nasa.jpf.listener.CoverageAnalyzer
+
+symbolic.minint=0
+symbolic.maxint=4
+vm.storage.class=nil
+
+
+#listener = gov.nasa.jpf.memoization.listener.TrieBuilder
+#listener=gov.nasa.jpf.memoization.listener.SolverCallListener
+#listener = gov.nasa.jpf.memoization.listener.rse.RSEListener_IP_p
+#listener = gov.nasa.jpf.memoization.listener.rse.RSEListener_IP_c
+
+
+#changedMethod=MerArbiter.TopLevelUser2$REGION_T$STATE_T$RegionR43$Transition300.guard()Z
+changedMethod=MerArbiter.TopLevelArbiter$REGION_T$STATE_T$RegionR39$StateRunning35$RegionR38$StateUser244$RegionR37$Transition186.guard()Z
+
+search.depth_limit=25
+
+#memoise.old_trie_name=trie_init.dat
+#memoise.new_trie_name=trie_id.dat
+
+
+#report.console.file=RSEResults/report_MER_rse_v2_p.txt
+#report.console.file=RSEResults/report_MER_rse_v2_c.txt
+#report.console.file=RSEResults/report_MER_build_v0.txt
+#report.console.file=RSEResults/report_MER_regular_v2.txt
