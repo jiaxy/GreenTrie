@@ -74,16 +74,25 @@ public class TCASTest {
 	}
 	
 	@Test
-	public void testAddUBTreeStore() {
+	public void testAddUBTreesStore() {
 		TestUtil.initUBTrees(conf);
 		TestUtil.clearUBTrees(conf);
-		TestUtil.testIncremental(conf,addClasses,methods);
+		TestUtil.testIncremental(conf, addClasses, methods);
 	}
+	
 
 	@Test
 	public void testDeleteTrieStore() {
 		TestUtil.initTries(conf);
 		TestUtil.clearTrie(conf);
+		String[] deleteClasses = TestUtil.reverse(addClasses);
+		TestUtil.testIncremental(conf, deleteClasses, methods);
+	}
+	
+	@Test
+	public void testDeleteUBTreeStore() {
+		TestUtil.initUBTrees(conf);
+		TestUtil.clearUBTrees(conf);
 		String[] deleteClasses = TestUtil.reverse(addClasses);
 		TestUtil.testIncremental(conf, deleteClasses, methods);
 	}
@@ -102,7 +111,14 @@ public class TCASTest {
 		TestUtil.clearTrie(conf);
 		TestUtil.testIncremental(conf, modifyClasses, methods);
 	}
-
+	
+	@Test
+	public void testMofifyUBTreesStore() {
+		TestUtil.initUBTrees(conf);
+		TestUtil.clearUBTrees(conf);
+		TestUtil.testIncremental(conf, modifyClasses, methods);
+	}
+	
 	@Test
 	public void testMofifyRedisStore() {
 		TestUtil.initRedis(conf);

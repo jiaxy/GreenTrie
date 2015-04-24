@@ -1,10 +1,10 @@
-package probsym.modify;
+package probsym.add;
 //package tcas;
 
 import gov.nasa.jpf.symbc.Symbolic;
 import gov.nasa.jpf.symbc.probsym.Analyze;
 
-public class TCAS2 {
+public class TCAS1 {
 
 	public static void covered(int br) {
 		Analyze.coverage(""+br);
@@ -109,35 +109,35 @@ public class TCAS2 {
 	}
 
 	int alt_sep_test(){
-	    boolean enabled, tcas_equipped, intent_not_known;
-	    boolean need_upward_RA, need_downward_RA;
-	    int alt_sep;
-
-	    enabled = High_Confidence && ((Own_Tracked_Alt_Rate < OLEV) || (Cur_Vertical_Sep >= MAXALTDIFF));
-	    tcas_equipped = Other_Capability == TCAS_TA;
-	    intent_not_known = Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT;
-	    
-	    alt_sep = UNRESOLVED;
-	    
-	    if (enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped)){
-			need_upward_RA = Non_Crossing_Biased_Climb() && Own_Below_Threat();
-			need_downward_RA = Non_Crossing_Biased_Descend() && Own_Above_Threat();
-			if (need_upward_RA && need_downward_RA) {
-		        /* unreachable: requires Own_Below_Threat and Own_Above_Threat
-		           to both be true - that requires Own_Tracked_Alt < Other_Tracked_Alt
-		           and Other_Tracked_Alt < Own_Tracked_Alt, which isn't possible */
-			    alt_sep = UNRESOLVED;
-			} else if (need_upward_RA) {
-			    alt_sep = UPWARD_RA;
-			} else if (need_downward_RA) {
-			    alt_sep = DOWNWARD_RA;
-			} else {
-			    alt_sep = UNRESOLVED;
-			}
-	    }
-	    
-	    covered(10 + alt_sep);
-	    return alt_sep;
+		  boolean enabled, tcas_equipped, intent_not_known;
+		    boolean need_upward_RA, need_downward_RA;
+		    int alt_sep;
+		    if(!Own_Below_Threat()&&!Own_Above_Threat()){
+				  return UNRESOLVED;
+			  }
+		    enabled = High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) && (Cur_Vertical_Sep > MAXALTDIFF);
+		    tcas_equipped = Other_Capability == TCAS_TA;
+		    intent_not_known = Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT&&Own_Tracked_Alt_Rate != OLEV&&
+		    		(Own_Below_Threat()||Own_Above_Threat());
+		    alt_sep = UNRESOLVED;
+		    if (enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped)){
+				need_upward_RA = Non_Crossing_Biased_Climb() && Own_Below_Threat();
+				need_downward_RA = Non_Crossing_Biased_Descend() && Own_Above_Threat();
+				if (need_upward_RA && need_downward_RA) {
+			        /* unreachable: requires Own_Below_Threat and Own_Above_Threat
+			           to both be true - that requires Own_Tracked_Alt < Other_Tracked_Alt
+			           and Other_Tracked_Alt < Own_Tracked_Alt, which isn't possible */
+				    alt_sep = UNRESOLVED;
+				} else if (need_upward_RA) {
+				    alt_sep = UPWARD_RA;
+				} else if (need_downward_RA) {
+				    alt_sep = DOWNWARD_RA;
+				} else {
+				    alt_sep = UNRESOLVED;
+				}
+			    }
+		    covered(10 + alt_sep);
+		    return alt_sep;
 	}
 	
 	//alternate entry point for test purposes
@@ -161,7 +161,7 @@ public class TCAS2 {
 
     public static void main (String[] args) {
     	int res =0;
-        TCAS2 tcas = new TCAS2();
+        TCAS1 tcas = new TCAS1();
         if (args.length == 12){
        		tcas.Cur_Vertical_Sep = Integer.parseInt(args[0]);
         	if (args[1].equalsIgnoreCase("0"))

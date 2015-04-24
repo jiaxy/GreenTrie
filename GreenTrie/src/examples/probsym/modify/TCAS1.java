@@ -4,7 +4,7 @@ package probsym.modify;
 import gov.nasa.jpf.symbc.Symbolic;
 import gov.nasa.jpf.symbc.probsym.Analyze;
 
-public class TCAS2 {
+public class TCAS1 {
 
 	public static void covered(int br) {
 		Analyze.coverage(""+br);
@@ -113,7 +113,7 @@ public class TCAS2 {
 	    boolean need_upward_RA, need_downward_RA;
 	    int alt_sep;
 
-	    enabled = High_Confidence && ((Own_Tracked_Alt_Rate < OLEV) || (Cur_Vertical_Sep >= MAXALTDIFF));
+	    enabled = High_Confidence && ((Own_Tracked_Alt_Rate <= OLEV) || (Cur_Vertical_Sep > MAXALTDIFF));
 	    tcas_equipped = Other_Capability == TCAS_TA;
 	    intent_not_known = Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT;
 	    
@@ -161,7 +161,7 @@ public class TCAS2 {
 
     public static void main (String[] args) {
     	int res =0;
-        TCAS2 tcas = new TCAS2();
+        TCAS1 tcas = new TCAS1();
         if (args.length == 12){
        		tcas.Cur_Vertical_Sep = Integer.parseInt(args[0]);
         	if (args[1].equalsIgnoreCase("0"))
