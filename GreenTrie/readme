@@ -24,7 +24,7 @@ This artifact includes an Eclipse project, which can be imported into Eclipse to
 3. Reproduce the experiment results
 ################################
  
- The folder src/examples containts 6 subject programs of our experiments. The Junit test classes in this folder can be used to produce the  experiment results. 
+ The folder src/examples contains 6 subject programs of our experiments. The Junit test classes in this folder can be used to produce the  experiment results. 
  For example, BinTreeTest.java is a Junit test case for program BinTree. It contains 8 test methods:
 	(1)testRedis:  "reuse in single run" evaluation  with Classical Green framework(Table 1 in paper).
 	(2)testTries: "reuse in single run" evaluation with GreenTrie framework(Table 1 in paper).	
@@ -49,7 +49,9 @@ This artifact includes an Eclipse project, which can be imported into Eclipse to
   (3)"cacheHitCount": the number of reusable constraints found in store.
   (4)"cacheMissCount": the number of constraint that cannot found reusable solutions in store, and this is also the number of constraint solved by solver in this run.
   (5)"timeConsumption": the total time spent on constraint solving by SAT/SMT solver. 
-	
+  
+  Notice: GreenTrie framework has been updated after the paper is submitted, therefore some experiment results may be a little different from that in the paper. In most cases,the result is better than that in the paper.
+    
 	  
  ##########################################
 4.  Use GreenTrie in Symbolic Pathfinder
