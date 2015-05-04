@@ -55,7 +55,7 @@ public class BinTreeTest {
 	@Test
 	public void testAddTrieStore() {
 		TestUtil.initTries(conf);
-		//TestUtil.clearTrie(conf);
+		TestUtil.clearTrie(conf);
 		TestUtil.testIncremental(conf,addClasses,methods);
 	}
 	

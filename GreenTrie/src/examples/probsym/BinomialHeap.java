@@ -365,7 +365,7 @@ class BinomialHeap {
 	}
 	
 	public static void main(String[] Argv) {
-		runTestDriver(3);
+		runTestDriver(5);
 		
 		/*
 		BinomialHeap b = new BinomialHeap();

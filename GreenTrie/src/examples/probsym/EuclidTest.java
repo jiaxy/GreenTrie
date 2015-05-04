@@ -31,14 +31,14 @@ public class EuclidTest {
 	@Test
 	public void testRedis() {
 		TestUtil.initRedis(conf);
-		//TestUtil.clearRedis();
+		TestUtil.clearRedis();
 		TestUtil.runJPF(conf);
 	}
 	
 	@Test
 	public void testTries() {
 		TestUtil.initTries(conf);
-		//TestUtil.clearTrie(conf);
+		TestUtil.clearTrie(conf);
 		TestUtil.runJPF(conf);
 	}
 	

@@ -7,7 +7,7 @@ target=MerArbiter.MerArbiterSym
 symbolic.method = MerArbiter.MerArbiterSym.setUser1Input(sym#sym),MerArbiter.MerArbiterSym.setUser2Input(sym#sym),MerArbiter.MerArbiterSym.flag(sym)
 symbolic.min_int = 0
 symbolic.max_int = 1024
-search.depth_limit=20
+search.depth_limit=15
 
 symbolic.green = true
 green.taskmanager = za.ac.sun.cs.green.taskmanager.ParallelTaskManager

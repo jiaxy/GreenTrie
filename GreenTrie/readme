@@ -24,16 +24,21 @@ This artifact includes an Eclipse project, which can be imported into Eclipse to
 3. Reproduce the experiment results
 ################################
  
- The folder src/examples contains 6 subject programs of our experiments. The Junit test classes in this folder can be used to produce the  experiment results. 
+ The folder src/examples contains 7 subject programs of our experiments. The Junit test classes in this folder can be used to produce the  experiment results. 
  For example, BinTreeTest.java is a Junit test case for program BinTree. It contains 8 test methods:
 	(1)testRedis:  "reuse in single run" evaluation  with Classical Green framework(Table 1 in paper).
 	(2)testTries: "reuse in single run" evaluation with GreenTrie framework(Table 1 in paper).	
- (3)testAddRedisStore: "reuse across runs" evaluation for ADDITION changes with Classical Green framework(Table 2 in paper).
-	(4)testAddTrieStore: "reuse across runs" evaluation for ADDITION changes with GreenTrie framework(Table 2 in paper).
-	(5)testDeleteRedisStore: "reuse across runs" evaluation for DELETION changes with Classical Green framework(Table 2 in paper).
-	(6)testDeleteTrieStore: "reuse across runs" evaluation for DELETION changes with GreenTrie framework(Table 2 in paper).
-	(7)testMofifyRedisStore: "reuse across runs" evaluation for MODIFICATION changes with Classical Green framework(Table 2 in paper).
-	(8)testMofifyTrieStore: "reuse across runs" evaluation for MODIFICATION changes with GreenTrie framework(Table 2 in paper).
+	(3)testUBTrees: "reuse in single run" evaluation with KLEE-like approach(Table 1 in paper).	
+ (4)testAddRedisStore: "reuse across runs" evaluation for ADDITION changes with Classical Green framework(Table 2 in paper).
+	(5)testAddTrieStore: "reuse across runs" evaluation for ADDITION changes with GreenTrie framework(Table 2 in paper).
+	(6)testAddUBTreeStore: "reuse across runs" evaluation for ADDITION changes with KLEE-like approach(Table 2 in paper).
+	(7)testDeleteRedisStore: "reuse across runs" evaluation for DELETION changes with Classical Green framework(Table 2 in paper).
+	(8)testDeleteTrieStore: "reuse across runs" evaluation for DELETION changes with GreenTrie framework(Table 2 in paper).
+	(9)testDeleteUBTreeStore: "reuse across runs" evaluation for ADDITION changes with KLEE-like approach(Table 2 in paper).
+	(10)testMofifyRedisStore: "reuse across runs" evaluation for MODIFICATION changes with Classical Green framework(Table 2 in paper).
+	(11)testMofifyTrieStore: "reuse across runs" evaluation for MODIFICATION changes with GreenTrie framework(Table 2 in paper).
+	(12)testMofifyUBTreeStore: "reuse across runs" evaluation for MODIFICATION changes with KLEE-like approach(Table 2 in paper).
+	
 	
 	The "Reuse across Programs" evaluation(Table 3 in paper) for Classical Green framework is done as following:     
   (1) run the "testRedis" method of the first program's test class, to cache its constraint solutions.
@@ -43,6 +48,11 @@ This artifact includes an Eclipse project, which can be imported into Eclipse to
   (1) run the "testTrie" method of the first program's test class, to cache its constraint solutions.
   (2) delete the line "TestUtil.clearTrie(conf);" of method "testTrie" of the second program's test class, and run it, to reuse the solutions of first program for constraints solving.
       
+  The "Reuse across Programs" evaluation(Table 3 in paper) for KLEE-like approach is done as following:     
+  (1) run the "testUBTrees" method of the first program's test class, to cache its constraint solutions.
+  (2) delete the line "TestUtil.clearUBTrees(conf);" of method "testUBTrees" of the second program's test class, and run it, to reuse the solutions of first program for constraints solving.
+      
+      
 	The experiment result is shown in the console after the running of test method. 
 	(1)"elapsed time": the running time of symbolic execution.
 	(2)"invocationCount": the number of constraint solving request received by Green/GreenTrie
@@ -50,9 +60,7 @@ This artifact includes an Eclipse project, which can be imported into Eclipse to
   (4)"cacheMissCount": the number of constraint that cannot found reusable solutions in store, and this is also the number of constraint solved by solver in this run.
   (5)"timeConsumption": the total time spent on constraint solving by SAT/SMT solver. 
   
-  Notice: GreenTrie framework has been updated after the paper is submitted, therefore some experiment results may be a little different from that in the paper. In most cases,the result is better than that in the paper.
-    
-	  
+ 	  
  ##########################################
 4.  Use GreenTrie in Symbolic Pathfinder
 ##########################################
