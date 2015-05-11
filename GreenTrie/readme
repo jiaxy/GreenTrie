@@ -18,7 +18,7 @@ This artifact includes an Eclipse project, which can be imported into Eclipse to
  (1) Unzip the artifact, and import the folder "GreenTrie" into Eclipse as an project.
  (2) Right click the build.xml, and use menu item "run as/Ant build" to build the framework.
  (3) Setup the Z3 and CVC3: if you OS is linux, copy library files(libcvc3.so.5.0.0,libcvc3.so.5.0,libcvc3.so.5,libz3java.so,libz3.so) of Z3 and CVC3 into the directory /lib of your computer.
-
+	if you OS is Mac OS(64bit), copy libz3.dylib into the folder /usr/lib 
   
  ################################
 3. Reproduce the experiment results
