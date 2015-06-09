@@ -16,7 +16,7 @@
 	<classpathentry kind="lib" path="lib/junit_4.8.2.jar"/>
 	<classpathentry kind="lib" path="lib/libcvc3.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="L-Trie/lib"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="GreenTrie/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/org.hamcrest.core_1.1.0.jar"/>

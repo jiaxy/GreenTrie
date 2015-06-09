@@ -70,6 +70,7 @@ public class SATZ3JavaService extends SATService {
 			instance.setData("solution", solution);
 		}
 		
+		
 		return solution!=null;
 	}
 	
@@ -116,6 +117,9 @@ public class SATZ3JavaService extends SATService {
 				}
 			} else {
 				log.log(Level.WARNING,"constraint has no model, it is infeasible");
+				Expr[] exps=Z3solver.getUnsatCore();
+				System.out.println("unsat core:"+exps);
+				
 				return null;
 			}
 		} catch (Z3Exception e) {
