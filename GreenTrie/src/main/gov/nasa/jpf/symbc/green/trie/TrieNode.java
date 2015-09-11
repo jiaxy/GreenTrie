@@ -20,25 +20,16 @@ import za.ac.sun.cs.green.expr.Operation;
  * 
  * @author Jia Xiangyang
  */
-public class State implements Serializable {
+public class TrieNode implements Serializable {
 	private static final long serialVersionUID = 1L;
-	/** effective the size of the keyword */
 	private final int depth;
 	private final int logicDepth;
 
-	/**
-	 * only used for the root state to refer to itself in case no matches have
-	 * been found
-	 */
-	private final State rootState;
+	private final TrieNode rootNode;
 
-	/**
-	 * referred to in the white paper as the 'goto' structure. From a state it
-	 * is possible to go to other states, depending on the character passed.
-	 */
-	private Map<Operation, State> success = new TreeMap<Operation, State>();
+	private Map<Operation, TrieNode> success = new TreeMap<Operation, TrieNode>();
 
-	private State previous = null;
+	private TrieNode previous = null;
 
 	private Operation inAct = null;
 
@@ -46,43 +37,39 @@ public class State implements Serializable {
 
 	private int minDepthofSuceess = Integer.MAX_VALUE;
 
-	/**
-	 * whenever this state is reached, it will emit the matches keywords for
-	 * future reference
-	 */
 	private Map<String, Object> solution = null;
 
-	public State() {
+	public TrieNode() {
 		this(0, 0);
 	}
 
-	public State(int depth, int logicDepth) {
+	public TrieNode(int depth, int logicDepth) {
 		this.depth = depth;
 		this.logicDepth = logicDepth;
-		this.rootState = depth == 0 ? this : null;
+		this.rootNode = depth == 0 ? this : null;
 	}
 
-	private State nextState(Operation act, boolean ignoreRootState) {
-		State nextState = this.success.get(act);
-		if (!ignoreRootState && nextState == null && this.rootState != null) {
-			nextState = this.rootState;
+	private TrieNode nextNode(Operation act, boolean ignoreRootState) {
+		TrieNode nextState = this.success.get(act);
+		if (!ignoreRootState && nextState == null && this.rootNode != null) {
+			nextState = this.rootNode;
 		}
 		return nextState;
 	}
 
-	public State nextState(Operation act) {
-		return nextState(act, false);
+	public TrieNode nextNode(Operation act) {
+		return nextNode(act, false);
 	}
 
-	public State nextStateIgnoreRootState(Operation act) {
-		return nextState(act, true);
+	public TrieNode nextNodeIgnoreRoot(Operation act) {
+		return nextNode(act, true);
 	}
 
-	public State addState(Operation act, List<State> list, boolean sat,
+	public TrieNode addNode(Operation act, List<TrieNode> list, boolean sat,
 			int logicDepth) {
-		State nextState = nextStateIgnoreRootState(act);
+		TrieNode nextState = nextNodeIgnoreRoot(act);
 		if (nextState == null) {
-			nextState = new State(this.depth + 1, logicDepth);
+			nextState = new TrieNode(this.depth + 1, logicDepth);
 			nextState.previous = this;
 			nextState.inAct = act;
 			this.success.put(act, nextState);
@@ -103,7 +90,7 @@ public class State implements Serializable {
 		this.solution = solution;
 	}
 
-	public Collection<State> getStates() {
+	public Collection<TrieNode> getNodes() {
 		return this.success.values();
 	}
 
@@ -127,15 +114,15 @@ public class State implements Serializable {
 		this.minDepthofSuceess = minDepthofSuceess;
 	}
 
-	public Map<Operation, State> getSuccess() {
+	public Map<Operation, TrieNode> getSuccess() {
 		return success;
 	}
 
-	public State getPrevious() {
+	public TrieNode getPrevious() {
 		return previous;
 	}
 
-	public void setPrevious(State previous) {
+	public void setPrevious(TrieNode previous) {
 		this.previous = previous;
 	}
 

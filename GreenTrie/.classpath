@@ -26,11 +26,18 @@
 	<classpathentry kind="lib" path="lib/jpf-core/jpf-classes.jar"/>
 	<classpathentry kind="lib" path="lib/jpf-symbc/jpf-symbc-annotations.jar"/>
 	<classpathentry kind="lib" path="lib/jpf-symbc/jpf-symbc-classes.jar" sourcepath="/jpf-symbc"/>
-	<classpathentry kind="lib" path="lib/jpf-symbc/jpf-symbc.jar"/>
+	<classpathentry kind="lib" path="lib/jpf-symbc/jpf-symbc.jar" sourcepath="/jpf-symbc"/>
 	<classpathentry kind="lib" path="lib/jpf-core/jpf.jar" sourcepath="/jpf-core"/>
 	<classpathentry kind="lib" path="lib/jpf-core/RunJPF.jar"/>
 	<classpathentry kind="lib" path="lib/RunJPF.jar"/>
 	<classpathentry kind="lib" path="lib/JSAP-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/foundry-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/bitsy-1.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/blueprints-core-2.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/ness-core-1.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-annotations-2.1.2-2.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-databind-2.1.2.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

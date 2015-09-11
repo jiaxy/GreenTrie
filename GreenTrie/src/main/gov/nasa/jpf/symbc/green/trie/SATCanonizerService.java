@@ -50,6 +50,7 @@ public class SATCanonizerService extends BasicService {
 			final Instance i = new Instance(getSolver(), instance.getSource(), null, e);
 			result = Collections.singleton(i);
 			instance.setData(getClass(), result);
+			instance.getRoot().setData("varMap", map);
 		}
 		return result;
 	}

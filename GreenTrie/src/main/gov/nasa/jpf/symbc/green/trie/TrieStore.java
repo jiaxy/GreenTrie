@@ -210,6 +210,12 @@ public class TrieStore implements ExpressionStore {
 				this.maxMissMatchTime = Math.max(this.maxMissMatchTime, System.currentTimeMillis() - t0);
 				// this.missExp.add(exp.toString());
 				System.out.println("cannot find the result for :" + exp);
+				SubSetTask subSetTask2 = new SubSetTask(satisfiableTrie, expList);
+				FutureTask<Boolean> task3 = new FutureTask<Boolean>(subSetTask2);
+				task3.run();
+				if(task3.get()){
+					System.out.println("found a subset from SAT store :" + exp);
+				}
 			} else {
 				System.out.println("found " + result + "  result for:" + exp);
 			}
@@ -252,9 +258,9 @@ public class TrieStore implements ExpressionStore {
 			Collections.sort(expList);
 			expList = LogicalRelationUtil.logicallyReduce(expList);
 			if (satisfiable) {
-				satisfiableTrie.addPattern(expList, solution, satisfiable);
+				satisfiableTrie.saveConstraint(expList, solution, satisfiable);
 			} else {
-				unsatisfiableTrie.addPattern(expList, solution, satisfiable);
+				unsatisfiableTrie.saveConstraint(expList, solution, satisfiable);
 				// this.UNSATExp.add(exp.toString());
 			}
 			this.totalSaveCount++;

@@ -24,7 +24,7 @@ public class Trie implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	State rootState;
+	TrieNode rootState;
 
 	private Properties config;
 
@@ -34,24 +34,24 @@ public class Trie implements Serializable {
 
 	private Map<String, Expression> expMap = new HashMap<String, Expression>();
 
-	private Map<Operation, List<State>> expPositions = new HashMap<Operation, List<State>>(); 
+	private Map<Operation, List<TrieNode>> expPositions = new HashMap<Operation, List<TrieNode>>(); 
 	
 
 
 	public Trie() {
-		this.rootState = new State();
+		this.rootState = new TrieNode();
 	}
 
 	public Trie(Properties config) {
 		this.config = config;
 	}
 
-	public void addPattern(List<Operation> pattern, Map<String,Object> solution,	boolean sat) {
-		int size = pattern.size();
-		if (pattern == null || size == 0) {
+	public void saveConstraint(List<Operation> constraintList, Map<String,Object> solution,	boolean sat) {
+		int size = constraintList.size();
+		if (constraintList == null || size == 0) {
 			return;
 		}
-		State currentState = this.rootState;
+		TrieNode currentState = this.rootState;
 		Expression prePrefix=null;
 		int logicDepth=0;
 		for (int i = 0; i < size; i++) {
@@ -60,8 +60,8 @@ public class Trie implements Serializable {
 					currentState.getMaxDepthofSuceess(), size - i));
 			currentState.setMinDepthofSuceess(Math.min(
 					currentState.getMinDepthofSuceess(), size - i));
-			Operation exp = (Operation) this.getAndPutExpression(pattern.get(i)
-					.toString(), pattern.get(i));
+			Operation exp = (Operation) this.getAndPutExpression(constraintList.get(i)
+					.toString(), constraintList.get(i));
 			Expression prefix = LogicalRelationUtil.getCononizedPrefix(exp);
 			if(!prefix.equals(prePrefix)){
 				logicDepth++;
@@ -72,7 +72,7 @@ public class Trie implements Serializable {
 			LogicalRelationUtil.setCononizedPrefix(exp, p);
 			List<Operation> heads = getImplicationTree(prefixStr);
 			exp = LogicalRelationUtil.insertIntoImplyGraph(heads, exp);
-			currentState = currentState.addState(exp, getExpPositions(exp),sat,logicDepth);
+			currentState = currentState.addNode(exp, getExpPositions(exp),sat,logicDepth);
 		}
 		currentState.setSolution(solution);
 		if(!sat&&!currentState.getSuccess().isEmpty()){
@@ -82,10 +82,10 @@ public class Trie implements Serializable {
 		patternCount++;
 	}
 
-	private List<State> getExpPositions(Operation exp) {
-		List<State> heads = this.expPositions.get(exp);
+	private List<TrieNode> getExpPositions(Operation exp) {
+		List<TrieNode> heads = this.expPositions.get(exp);
 		if (heads == null) {
-			heads = new ArrayList<State>();
+			heads = new ArrayList<TrieNode>();
 			this.expPositions.put(exp, heads);
 		}
 		return heads;
@@ -181,13 +181,13 @@ public class Trie implements Serializable {
 	return result;
 	}
 	
-	public boolean hasSubset(State s, Set<Operation> implySet) {
+	public boolean hasSubset(TrieNode s, Set<Operation> implySet) {
 		if(s.getSuccess().isEmpty()){
 			return true;
 		}
 		for(Operation o:s.getSuccess().keySet()){
 			if(implySet.contains(o)){
-				boolean r = hasSubset(s.nextState(o),implySet);
+				boolean r = hasSubset(s.nextNode(o),implySet);
 				if(r){
 					return true;
 				}
@@ -198,7 +198,7 @@ public class Trie implements Serializable {
 	
 
 	@SuppressWarnings("unchecked")
-	public boolean hasSubset(State currentState, List<Operation> target, int i, List<List<Operation>> implyList) {
+	public boolean hasSubset(TrieNode currentState, List<Operation> target, int i, List<List<Operation>> implyList) {
 		int size = target.size();
 //		if (currentState.getMinDepthofSuceess() > size - i) {
 //			return false;
@@ -208,7 +208,7 @@ public class Trie implements Serializable {
 			// System.out.println("find "+target.get(j)+" in "+currentState.getSuccess().keySet());
 			List<Operation> list = implyList.get(j);
 			for (Operation o : list) {
-				State next = currentState.getSuccess().get(o);
+				TrieNode next = currentState.getSuccess().get(o);
 				if (next != null) {
 					if (next.getSuccess().isEmpty()) {
 						return true;
@@ -259,8 +259,8 @@ public class Trie implements Serializable {
 		List<Operation> lastopList = impliedList.get(size - 1);
 		int pathCount=0;
 		for (Operation o : lastopList) {
-			List<State> states = this.expPositions.get(o);
-			for (State s : states) {
+			List<TrieNode> states = this.expPositions.get(o);
+			for (TrieNode s : states) {
 //				
 //				if(s.getLogicDepth()<logicDepthList.get(size)-1){
 //					continue;
@@ -281,7 +281,7 @@ public class Trie implements Serializable {
 		return false;
 	}
 
-	private boolean isSuperSet(State s, int end, List<List<Operation>> impliedList, List<Integer> logicDepthList) {
+	private boolean isSuperSet(TrieNode s, int end, List<List<Operation>> impliedList, List<Integer> logicDepthList) {
 		while (s != null&&end >= 0&&s.getLogicDepth()>=logicDepthList.get(end)) {  //&& s.getDepth() > end
 			while(end >= 0 &&impliedList.get(end).contains(s.getInAct())){// sometimes one constraint in superset implies multiple constraints in subset
 				end--;
@@ -329,7 +329,7 @@ public class Trie implements Serializable {
 //		}
 //	}
 
-	public State getRootState() {
+	public TrieNode getRootState() {
 		return rootState;
 	}
 
@@ -349,7 +349,7 @@ public class Trie implements Serializable {
 		this.expMap = expMap;
 	}
 	
-	public Map<Operation, List<State>> getExpPositions() {
+	public Map<Operation, List<TrieNode>> getExpPositions() {
 		return expPositions;
 	}
 

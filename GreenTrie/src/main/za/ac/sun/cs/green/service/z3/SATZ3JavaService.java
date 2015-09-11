@@ -67,7 +67,7 @@ public class SATZ3JavaService extends SATService {
 //		}
 		Map<Variable, Object> solution=this.model(instance);
 		if(solution!=null){
-			instance.setData("solution", solution);
+			instance.getRoot().setData("solution", solution);
 		}
 		
 		
