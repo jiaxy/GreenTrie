@@ -12,6 +12,7 @@ import java.util.List;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import za.ac.sun.cs.green.EntireSuite;
 import za.ac.sun.cs.green.service.SATService;
 import za.ac.sun.cs.green.util.Reporter;
 
@@ -19,17 +20,20 @@ public class TestUtil {
 
 	public static void initTries(Config conf) {
 		conf.setProperty("green.store",
-				"gov.nasa.jpf.symbc.green.trie.TrieStore");
+				"cn.edu.whu.sklse.greentrie.store.TrieStore");
 		conf.setProperty("green.service.sat.canonize",
-				"gov.nasa.jpf.symbc.green.trie.SATCanonizerService");
+				"cn.edu.whu.sklse.greentrie.canolize.SATCanonizerService");
+		conf.setProperty("green.service.sat.z3",
+				"cn.edu.whu.sklse.greentrie.z3.SATZ3JavaService");
+		conf.setProperty("green.z3.path", "/Users/jiaxy/Dropbox/z3/z3-x64-osx-10.9.5/bin/z3");
 		// clearTrie(conf);
 	}
 
 	public static void initUBTrees(Config conf) {
 		conf.setProperty("green.store",
-				"gov.nasa.jpf.symbc.green.trie.UBTreeStore");
+				"cn.edu.whu.sklse.ubtree.UBTreeStore");
 		conf.setProperty("green.service.sat.canonize",
-				"gov.nasa.jpf.symbc.green.trie.SATCanonizerService");
+				"cn.edu.whu.sklse.ubtree.SATCanonizerService");
 		// clearTrie(conf);
 	}
 

@@ -16,7 +16,9 @@ import com.microsoft.z3.Expr;
 import com.microsoft.z3.FuncDecl;
 import com.microsoft.z3.Goal;
 import com.microsoft.z3.IntExpr;
+import com.microsoft.z3.IntSort;
 import com.microsoft.z3.Log;
+import com.microsoft.z3.Model;
 import com.microsoft.z3.Params;
 import com.microsoft.z3.Pattern;
 import com.microsoft.z3.RatNum;
@@ -53,7 +55,70 @@ public class Z3Test {
 		cfg.put("proof", "true");
 		ctx = new Context(cfg);
 	}
+	
+	
+	@Test
+	public void incrementalTest() throws Z3Exception, TestFailedException{
+		  System.out.println("PushPopExample1");
+	        Log.append("PushPopExample1");
 
+	        /* create a big number */
+	        IntSort int_type = ctx.getIntSort();
+	        IntExpr big_number = ctx
+	                .mkInt("100000000");
+
+	        /* create number 3 */
+	        IntExpr three = (IntExpr) ctx.mkNumeral("3", int_type);
+
+	        /* create x */
+	        IntExpr x = ctx.mkIntConst("x");
+
+	        Solver solver = ctx.mkSolver();
+
+	        /* assert x >= "big number" */
+	        BoolExpr c1 = ctx.mkGe(x, big_number);
+	        solver.add(c1);
+	        System.out.println(solver.toString());
+	        
+	        /* create a backtracking point */
+	        System.out.println("push");
+	        solver.push();
+
+	        /* assert x <= 3 */
+	        BoolExpr c2 = ctx.mkLe(x, three);
+	        solver.add(c2);
+	        System.out.println(solver.toString());
+	        /* context is inconsistent at this point */
+	        if (solver.check() != Status.UNSATISFIABLE){
+	        	 throw new TestFailedException();
+	        }
+
+	        /*
+	         * backtrack: the constraint x <= 3 will be removed, since it was
+	         * asserted after the last ctx.Push.
+	         */
+	        System.out.println("pop");
+	        solver.pop(1);
+	        System.out.println(solver.toString());
+	        /* the context is consistent again. */
+	        if (solver.check() != Status.SATISFIABLE)
+	            throw new TestFailedException();
+
+	        /* new constraints can be asserted... */
+
+	        /* create y */
+	        IntExpr y = ctx.mkIntConst("y");
+
+	        /* assert y > x */
+	        System.out.println("push");
+	        BoolExpr c3 = ctx.mkGt(y, x);
+	        solver.add(c3);
+	        System.out.println(solver.toString());
+	        /* the context is still consistent. */
+	        if (solver.check() != Status.SATISFIABLE)
+	            throw new TestFailedException();
+	}
+	
 	@Test
 	public void unsatCoreAndProofExample() throws Z3Exception {
 		System.out.println("UnsatCoreAndProofExample");

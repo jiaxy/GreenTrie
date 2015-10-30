@@ -5,14 +5,8 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.logging.Level;
 
-import cvc3.Expr;
-import cvc3.FlagsMut;
-import cvc3.SatResult;
-import cvc3.Type;
-import cvc3.ValidityChecker;
-
-import za.ac.sun.cs.green.Instance;
 import za.ac.sun.cs.green.Green;
+import za.ac.sun.cs.green.Instance;
 import za.ac.sun.cs.green.expr.IntConstant;
 import za.ac.sun.cs.green.expr.IntVariable;
 import za.ac.sun.cs.green.expr.Operation;
@@ -22,6 +16,11 @@ import za.ac.sun.cs.green.expr.Variable;
 import za.ac.sun.cs.green.expr.Visitor;
 import za.ac.sun.cs.green.expr.VisitorException;
 import za.ac.sun.cs.green.service.SATService;
+import cvc3.Expr;
+import cvc3.FlagsMut;
+import cvc3.SatResult;
+import cvc3.Type;
+import cvc3.ValidityChecker;
 
 public class SATCVC3Service extends SATService {
 

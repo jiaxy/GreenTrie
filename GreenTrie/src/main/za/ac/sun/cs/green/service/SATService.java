@@ -3,8 +3,8 @@ package za.ac.sun.cs.green.service;
 import java.util.Map;
 import java.util.Set;
 
-import za.ac.sun.cs.green.Instance;
 import za.ac.sun.cs.green.Green;
+import za.ac.sun.cs.green.Instance;
 import za.ac.sun.cs.green.store.ExpressionStore;
 import za.ac.sun.cs.green.util.Reporter;
 
@@ -43,6 +43,7 @@ public abstract class SATService extends BasicService {
 
 	@Override
 	public Set<Instance> processRequest(Instance instance) {
+		//long t1=System.currentTimeMillis();
 		Boolean result = (Boolean) instance.getData(getClass());
 		if (result == null) {
 			result = solve0(instance);
@@ -50,10 +51,13 @@ public abstract class SATService extends BasicService {
 				instance.setData(getClass(), result);
 			}
 		}
+		//long t2=System.currentTimeMillis();
+		//System.out.println("time for processRequest:"+(t2-t1));
 		return null;
 	}
 
 	private Boolean solve0(Instance instance) {
+		long t1=System.currentTimeMillis();
 		invocationCount++;
 		Boolean result;
 		String key = SERVICE_KEY + instance.getFullExpression().toString();
@@ -74,6 +78,8 @@ public abstract class SATService extends BasicService {
 		} else {
 			cacheHitCount++;
 		}
+		long t2=System.currentTimeMillis();
+		System.out.println("time for solving:"+(t2-t1));
 		return result;
 	}
 

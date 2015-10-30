@@ -3,8 +3,6 @@ package probsym;
 import static org.junit.Assert.*;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.symbc.green.trie.FileUtil;
-import gov.nasa.jpf.symbc.green.trie.Trie;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +14,9 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import cn.edu.whu.sklse.greentrie.store.FileUtil;
+import cn.edu.whu.sklse.greentrie.store.Trie;
 
 public class BinTreeTest {
 	
