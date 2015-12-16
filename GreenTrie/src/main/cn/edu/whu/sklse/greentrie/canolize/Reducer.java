@@ -94,11 +94,11 @@ public class Reducer {
 				if(interval.min.equals(interval.max)){
 					result.add(buildOperation(op, NumberUtil.multiply(-1, interval.min), Operator.EQ));
 				}else {
-					if (!interval.min.equals(-Double.MAX_VALUE)) {
+					if (!interval.min.equals(Double.NEGATIVE_INFINITY)) {
 						Operator o1 = interval.minIsOpen ? Operator.GT : Operator.GE;
 						result.add(buildOperation(op, NumberUtil.multiply(-1, interval.min), o1));
 					}
-					if (!interval.max.equals(Double.MAX_VALUE)) {
+					if (!interval.max.equals(Double.POSITIVE_INFINITY)) {
 						Operator o1 = interval.maxIsOpen ? Operator.LT : Operator.LE;
 						result.add(buildOperation(op, NumberUtil.multiply(-1, interval.max), o1));
 					}
@@ -119,17 +119,19 @@ public class Reducer {
 	}
 
 	private Operation buildOperation(Expression op, Number num, Operator operator) {
-		if (num.doubleValue() == 0.0) {
-			return new Operation(operator, op, Operation.ZERO);
+		Constant c1=null;
+		if(NumberUtil.containtReal(op)){
+			c1=(num.doubleValue() == 0.0)?Operation.REAL_ZERO:new RealConstant(num.doubleValue());
+			return new Operation(operator, new Operation(Operator.ADD, op, c1), Operation.REAL_ZERO);
+		}else{
+			c1=(num.intValue() == 0)?Operation.ZERO:new IntConstant(num.intValue());
+			return new Operation(operator, new Operation(Operator.ADD, op, c1), Operation.ZERO);
 		}
-		//Number num = NumberUtil.multiply(-1, offset);
-		Constant c1 = (num instanceof Integer) ? new IntConstant(num.intValue()) : new RealConstant(num.doubleValue());
-		return new Operation(operator, new Operation(Operator.ADD, op, c1), Operation.ZERO);
 	}
 
 	class Interval {
-		Number min = -Double.MAX_VALUE;
-		Number max = Double.MAX_VALUE;
+		Number min = Double.NEGATIVE_INFINITY;
+		Number max = Double.POSITIVE_INFINITY;
 		boolean isInt = true;
 		boolean minIsOpen = true;
 		boolean maxIsOpen = true;
@@ -179,8 +181,8 @@ public class Reducer {
 		}
 
 		public void intersectWith(Interval b) {
-			double dif1 = NumberUtil.sub(this.min, b.min);
-			double dif2 = NumberUtil.sub(this.max, b.max);
+			double dif1 = NumberUtil.compare(this.min, b.min);
+			double dif2 = NumberUtil.compare(this.max, b.max);
 			if (dif1 == 0.0) {
 				this.minIsOpen = this.minIsOpen || b.minIsOpen;
 			} else if (dif1 <0){
@@ -197,7 +199,7 @@ public class Reducer {
 		}
 
 		public boolean isValid() {
-			double dif1 = NumberUtil.sub(this.max, this.min);
+			double dif1 = NumberUtil.compare(this.max, this.min);
 			if (dif1 < 0) {
 				return false;
 			} else if (dif1 == 0 && (this.maxIsOpen || this.minIsOpen)) {
@@ -217,7 +219,7 @@ public class Reducer {
 			}
 			List<Number> validNe1 = new ArrayList<Number>();
 			for (Number n : this.neValues) {
-				Double dif1 = NumberUtil.sub(n, this.min);
+				Double dif1 = NumberUtil.compare(n, this.min);
 				if (dif1 < 0) {
 					continue;
 				} else if (dif1 == 0 && !this.minIsOpen) {
@@ -232,7 +234,7 @@ public class Reducer {
 			}
 			Set<Number> valideNe2 = new TreeSet<Number>();
 			for (int i = validNe1.size() - 1; i >= 0; i--) {
-				Double dif2 = NumberUtil.sub(validNe1.get(i), this.max);
+				Double dif2 = NumberUtil.compare(validNe1.get(i), this.max);
 				if (dif2 > 0) {
 					continue;
 				} else if (dif2 == 0 && !this.maxIsOpen) {

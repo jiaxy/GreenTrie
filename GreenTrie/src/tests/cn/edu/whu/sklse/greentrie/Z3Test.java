@@ -28,8 +28,8 @@ public class Z3Test {
 		solver = new Green();
 		Properties props = new Properties();
 		
-		props.setProperty("green.taskmanager", "za.ac.sun.cs.green.taskmanager.ParallelTaskManager");
-		props.setProperty("green.store", "cn.edu.whu.sklse.greentrie.store.TrieStore");
+//		props.setProperty("green.taskmanager", "za.ac.sun.cs.green.taskmanager.ParallelTaskManager");
+//		props.setProperty("green.store", "cn.edu.whu.sklse.greentrie.store.TrieStore");
 		
 		props.setProperty("green.services", "sat");
 		props.setProperty("green.service.sat", "(slice (canonize z3))");

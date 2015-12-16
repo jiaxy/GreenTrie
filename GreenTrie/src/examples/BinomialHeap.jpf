@@ -1,5 +1,5 @@
-classpath = ${Greentrie}/build
-sourcepath = ${Greentrie}/src/examples
+classpath = build
+sourcepath = src/examples
 
 target=probsym.BinomialHeap
 symbolic.method=probsym.BinomialHeap.delete(sym)

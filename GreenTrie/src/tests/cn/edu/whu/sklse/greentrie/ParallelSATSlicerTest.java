@@ -137,6 +137,8 @@ public class ParallelSATSlicerTest {
 		check(o1, o2, "(v1==0)&&(v1!=1)", "v1==0", "v1!=1");
 	}
 	
+	
+	
 	@Test
 	public void test06() {
 		IntVariable v1 = new IntVariable("v1", 0, 99);
@@ -203,4 +205,12 @@ public class ParallelSATSlicerTest {
 		check(o1, o23, "(v1<(v2+v3))&&((v2<(v4+v5))&&(v6<(v7+v8)))", "v1<(v2+v3)", "v2<(v4+v5)");
 	}
 	
+	
+	@Test
+	public void test() {
+		RealVariable v = new RealVariable("v", 0.0, 99.0);
+		RealConstant c = new RealConstant(0.0);
+		Operation o = new Operation(Operation.Operator.EQ, v, c);
+		check(o, "v==0.0", "v==0.0");
+	}
 }

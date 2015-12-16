@@ -2,7 +2,6 @@ package probsym;
 
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.symbc.GreenListener;
 import gov.nasa.jpf.symbc.SymbolicInstructionFactory;
 
 import java.io.File;
@@ -13,18 +12,32 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import za.ac.sun.cs.green.EntireSuite;
+import za.ac.sun.cs.green.GreenListener;
 import za.ac.sun.cs.green.service.SATService;
 import za.ac.sun.cs.green.util.Reporter;
 
 public class TestUtil {
 
 	public static void initTries(Config conf) {
+		conf.setProperty("symbolic.green","true");
+		conf.setProperty("green.services",
+				"sat");
+		conf.setProperty("green.service.sat",
+				"(slice (canonize coral))");
 		conf.setProperty("green.store",
 				"cn.edu.whu.sklse.greentrie.store.TrieStore");
+		conf.setProperty("green.service.sat.slice",
+				"cn.edu.whu.sklse.greentrie.slice.SATSlicerService");
 		conf.setProperty("green.service.sat.canonize",
 				"cn.edu.whu.sklse.greentrie.canolize.SATCanonizerService");
 		conf.setProperty("green.service.sat.z3",
 				"cn.edu.whu.sklse.greentrie.z3.SATZ3JavaService");
+		conf.setProperty("green.service.sat.coral",
+				"cn.edu.whu.sklse.greentrie.coral.SATCoralService");
+		conf.setProperty("green.service.sat.iasolver",
+				"cn.edu.whu.sklse.greentrie.iasolver.SATIASolverService");
+		
+		
 		conf.setProperty("green.z3.path", "/Users/jiaxy/Dropbox/z3/z3-x64-osx-10.9.5/bin/z3");
 		// clearTrie(conf);
 	}
@@ -118,19 +131,22 @@ public class TestUtil {
 	public static String runJPF(Config conf) {
 		final List<String> reportResult = new ArrayList<String>();
 		JPF jpf = new JPF(conf);
-		//jpf.addListener(new GreenListener());
+		jpf.addListener(new GreenListener());
 		long t1 = System.currentTimeMillis();
 		jpf.run();
 		reportResult.add("elapsed time=" + (System.currentTimeMillis() - t1));
-		SymbolicInstructionFactory.greenSolver.report(new Reporter() {
-			@Override
-			public void report(String context, String message) {
-				if (context.equals("SATCVC3Service")
-						|| context.equals("SATZ3JavaService")) {
-					reportResult.add(message);
+		if(SymbolicInstructionFactory.greenSolver!=null){
+			SymbolicInstructionFactory.greenSolver.report(new Reporter() {
+				@Override
+				public void report(String context, String message) {
+					if (context.equals("SATCVC3Service")
+							|| context.equals("SATZ3JavaService")) {
+						reportResult.add(message);
+					}
 				}
-			}
-		});
+			});
+			
+		}
 		return reportResult.toString();
 	}
 

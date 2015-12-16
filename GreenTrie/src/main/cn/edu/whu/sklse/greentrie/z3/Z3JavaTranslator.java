@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import org.apache.commons.math.fraction.Fraction;
+
 import za.ac.sun.cs.green.expr.IntConstant;
 import za.ac.sun.cs.green.expr.IntVariable;
 import za.ac.sun.cs.green.expr.Operation;
@@ -69,7 +71,8 @@ class Z3JavaTranslator extends Visitor {
 	@Override
 	public void postVisit(RealConstant constant) {
 		try {
-			stack.push(context.mkReal(Double.toString(constant.getValue())));
+			Fraction fv = constant.getFractionValue();
+			stack.push(context.mkReal(fv.getNumerator(),fv.getDenominator()));
 		} catch (Z3Exception e) {
 			e.printStackTrace();
 		}

@@ -56,7 +56,7 @@ public class LogicalRelationUtil {
 		Operator rop = right.getOperator();
 		Number n1 = getConstantValue(left, pref1);
 		Number n2 = getConstantValue(right, pref2);
-		double dif=NumberUtil.sub(n1, n2);
+		double dif=NumberUtil.compare(n1, n2);
 		
 		switch (lop) {
 		case EQ:

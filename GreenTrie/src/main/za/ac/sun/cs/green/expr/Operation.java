@@ -41,6 +41,7 @@ public class Operation extends Expression {
 		SHIFTR(">>", 2, Fix.INFIX),
 		SHIFTUR(">>>", 2, Fix.INFIX),
 		BIT_CONCAT("BIT_CONCAT", 2, Fix.PREFIX),
+		ABS("ABS", 1),//added by Jia
 		SIN("SIN", 1),
 		COS("COS", 1),
 		TAN("TAN", 1),
@@ -124,8 +125,12 @@ public class Operation extends Expression {
 	}
 
 	public static final IntConstant ZERO = new IntConstant(0);
+	
+	public static final RealConstant REAL_ZERO = new RealConstant(0.0);
 
 	public static final IntConstant ONE = new IntConstant(1);
+	
+	public static final RealConstant REAL_ONE = new RealConstant(1.0);
 
 	public static final Expression FALSE = new Operation(Operation.Operator.EQ, ZERO, ONE);
 

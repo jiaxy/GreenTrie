@@ -107,9 +107,10 @@ public class TrieStore implements ExpressionStore {
 		reporter.report(getClass().getSimpleName(), "UNSAT_ImplySubGraphCount = "
 				+ unsatisfiableTrie.getImplicationTreeHeads().size());
 		// String m="";
-		// for(String s:UNSATExp){
-		// m+=s+"\n";
-		// }
+		
+		 for(String s:UNSATExp){
+			 System.out.println(s);
+		 }
 		// reporter.report(getClass().getSimpleName(), "UNSATExp = " +m);
 	}
 
@@ -224,7 +225,7 @@ public class TrieStore implements ExpressionStore {
 			this.totalQueryCount++;
 			this.totalQueryTime += System.currentTimeMillis() - t0;
 		}
-		System.out.println("found sovling result " + result + " for : " + exp);
+		//System.out.println("found sovling result " + result + " for : " + exp);
 		return result;
 	}
 
@@ -252,7 +253,7 @@ public class TrieStore implements ExpressionStore {
 			satisfiableTrie.saveConstraint(expList, solution, satisfiable);
 		} else {
 			unsatisfiableTrie.saveConstraint(expList, solution, satisfiable);
-			// this.UNSATExp.add(exp.toString());
+			this.UNSATExp.add(exp.toString());
 		}
 		this.totalSaveCount++;
 		this.totalSaveTime += System.currentTimeMillis() - t0;

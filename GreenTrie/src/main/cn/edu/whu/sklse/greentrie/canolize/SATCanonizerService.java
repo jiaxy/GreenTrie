@@ -71,9 +71,9 @@ public class SATCanonizerService extends BasicService {
 			expression.accept(canonizationVisitor);
 			//Collections.sort(list);
 			Expression canonized = canonizationVisitor.getExpression();
-//			System.out.println("canonized:" + canonized);
-//			canonized = new Reducer().reduce(canonized);
-//			System.out.println("reduced:" + canonized);
+			System.out.println("canonized:" + canonized);
+			canonized = new Reducer().reduce(canonized);
+			System.out.println("reduced:" + canonized);
 			if (canonized != null) {
 				canonized = new Renamer(map, canonizationVisitor.getVariableSet()).rename(canonized);
 			}
@@ -218,7 +218,7 @@ public class SATCanonizerService extends BasicService {
 				Expression c = null;
 				for (Expression e : newConjuncts) {
 					Operation o = (Operation) e;
-					if(!NumberUtil.containtReal(e)){
+					if(o.getOperand(1)==Operation.ZERO){
 						if (o.getOperator() == Operation.Operator.GT) {
 							e = new Operation(Operation.Operator.GE, merge(o.getOperand(0), new IntConstant(-1)),
 									o.getOperand(1));
@@ -360,7 +360,7 @@ public class SATCanonizerService extends BasicService {
 						unsatisfiable = true;
 					}
 				} else {
-					stack.push(new Operation(op, e, Operation.ZERO));
+					stack.push(createCompareExpression(op, e));
 				}
 				break;
 			case ADD:
@@ -382,13 +382,73 @@ public class SATCanonizerService extends BasicService {
 				} else if (r instanceof Constant) {
 					Number ri = NumberUtil.getValue((Constant) r);
 					stack.push(scale(ri, l));
-				} else {
-					stack.clear();
-					linearInteger = false;
+				} else if(r instanceof Operation && l instanceof Operation){
+					Operation or = ((Operation)r);
+					Operation ol = ((Operation)l);
+					Number coff=1;
+					Expression ex;
+					if(or.getOperator().equals(Operator.MUL)&& or.getOperand(0) instanceof Constant){
+							coff=NumberUtil.getValue((Constant) or.getOperand(0));
+							ex=or.getOperand(1);
+					}else{
+						ex=or;
+					}
+					if(ol.getOperator().equals(Operator.MUL)&& ol.getOperand(0) instanceof Constant){
+							coff=NumberUtil.multiply(coff,NumberUtil.getValue((Constant) or.getOperand(0)));
+							ex=new Operation(Operator.MUL,ex,or.getOperand(1));
+					}else{
+						ex=new Operation(Operator.MUL,ex,or);
+					}
+					
+					stack.push(new Operation(Operator.MUL,NumberUtil.getConstant(coff),ex));
+//					stack.clear();
+//					linearInteger = false;
 				}
+				break;
+			case DIV:
+				r = stack.pop();
+				l = stack.pop();
+				if ((l instanceof Constant) && (r instanceof Constant)) {
+					Number li = NumberUtil.getValue((Constant) l);
+					Number ri = NumberUtil.getValue((Constant) r);
+					stack.push(NumberUtil.getConstant(NumberUtil.div(li, ri)));
+				} else if (l instanceof Constant) {
+					Number li = NumberUtil.getValue((Constant) l);
+					stack.push(scale(li, r));
+				} else if (r instanceof Constant) {
+					Number ri = NumberUtil.getValue((Constant) r);
+					stack.push(scale(NumberUtil.div(1, ri), l));
+				} else {
+					stack.push(new Operation(Operator.MUL,l,r));
+//					stack.clear();
+//					linearInteger = false;
+				}
+				
+				break;
+				
+			case SIN:
+			case COS:
+			case ABS:
+			case SQRT:
+			case TAN:
+			case ASIN:
+			case ACOS:
+			case ROUND:
+			case ATAN:
+			case POWER:
+			case LOG:
+				Operation o=new Operation(op,stack.pop());
+				stack.push(new Operation(Operation.Operator.MUL, NumberUtil.getConstant(1.0), o));
+				
+				break;
 			default:
 				break;
 			}
+		}
+
+		private Operation createCompareExpression(Operation.Operator op, Expression e) {
+			Expression zero=(NumberUtil.containtReal(e))?Operation.REAL_ZERO:Operation.ZERO;
+			return new Operation(op, e, zero);
 		}
 
 		private boolean compareWithZero(Operation.Operator op, Constant e) {
@@ -443,9 +503,9 @@ public class SATCanonizerService extends BasicService {
 					r = (Operation) right;
 				}
 			}
-			SortedMap<Variable, Number> coefficients = new TreeMap<Variable, Number>();
+			SortedMap<Expression, Number> coefficients = new TreeMap<Expression, Number>();
 			Constant c;
-			Variable v;
+			Expression v;
 			Number k;
 
 			// Collect the coefficients of l
@@ -454,13 +514,13 @@ public class SATCanonizerService extends BasicService {
 					Operation o = (Operation) l.getOperand(1);
 					assert (o.getOperator() == Operation.Operator.MUL);
 					c = (Constant) o.getOperand(0);
-					v = (Variable) o.getOperand(1);
+					v = (Expression) o.getOperand(1);
 					coefficients.put(v, NumberUtil.getValue(c));
 					l = (Operation) l.getOperand(0);
 				}
 				assert (l.getOperator() == Operation.Operator.MUL);
 				c = (Constant) l.getOperand(0);
-				v = (Variable) l.getOperand(1);
+				v = (Expression) l.getOperand(1);
 				coefficients.put(v, NumberUtil.getValue(c));
 			}
 
@@ -470,7 +530,7 @@ public class SATCanonizerService extends BasicService {
 					Operation o = (Operation) r.getOperand(1);
 					assert (o.getOperator() == Operation.Operator.MUL);
 					c = (Constant) o.getOperand(0);
-					v = (Variable) o.getOperand(1);
+					v = (Expression) o.getOperand(1);
 					k = coefficients.get(v);
 					if (k == null) {
 						coefficients.put(v, NumberUtil.getValue(c));
@@ -481,7 +541,7 @@ public class SATCanonizerService extends BasicService {
 				}
 				assert (r.getOperator() == Operation.Operator.MUL);
 				c = (Constant) r.getOperand(0);
-				v = (Variable) r.getOperand(1);
+				v = (Expression) r.getOperand(1);
 				k = coefficients.get(v);
 				if (k == null) {
 					coefficients.put(v, NumberUtil.getValue(c));
@@ -491,7 +551,7 @@ public class SATCanonizerService extends BasicService {
 			}
 
 			Expression lr = null;
-			for (Map.Entry<Variable, Number> e : coefficients.entrySet()) {
+			for (Map.Entry<Expression, Number> e : coefficients.entrySet()) {
 				Number coef = e.getValue();
 				if (coef.doubleValue() != 0.0) {
 					Operation term = new Operation(Operation.Operator.MUL, NumberUtil.getConstant(coef), e.getKey());
@@ -534,7 +594,7 @@ public class SATCanonizerService extends BasicService {
 		}
 
 		private boolean isAddition(Expression expression) {
-			return ((Operation) expression).getOperator() == Operation.Operator.ADD;
+			return Operation.Operator.ADD==((Operation) expression).getOperator();
 		}
 
 		private Expression scale(Number factor, Expression expression) {

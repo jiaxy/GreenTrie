@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.apache.commons.math.fraction.Fraction;
+
 import za.ac.sun.cs.green.Green;
 import za.ac.sun.cs.green.Instance;
 import za.ac.sun.cs.green.expr.Variable;
@@ -15,6 +17,8 @@ import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
 import com.microsoft.z3.Model;
+import com.microsoft.z3.RatNum;
+import com.microsoft.z3.RealExpr;
 import com.microsoft.z3.Solver;
 import com.microsoft.z3.Status;
 import com.microsoft.z3.Z3Exception;
@@ -113,7 +117,8 @@ public class SATZ3JavaService extends SATService {
 					if (z3Val.isIntNum()) {
 						val = Integer.parseInt(z3Val.toString());
 					} else if (z3Val.isRatNum()) {
-						val = Double.parseDouble(z3Val.toString());
+						RatNum rv = (RatNum)z3Val;
+						val = new Fraction(rv.getNumerator().getInt(), rv.getDenominator().getInt());
 					} else {
 						log.log(Level.WARNING, "Error unsupported type for variable " + z3Val);
 						return null;
@@ -127,7 +132,7 @@ public class SATZ3JavaService extends SATService {
 				
 			} else {
 				log.log(Level.WARNING,"constraint has no model, it is infeasible");
-				Expr[] exps=Z3solver.getUnsatCore();
+				Expr[] exps=Z3solver.getUnsatCore();//TODO doesn't work.
 				System.out.println("unsat core:"+exps);
 				
 				return null;

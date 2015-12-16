@@ -204,6 +204,11 @@ public class SolverTranslator {
 				l = stack.pop();
 				stack.push(new Operation(Operation.Operator.MUL, l, r));
 				break;
+			case DIV:
+				r = stack.pop();
+				l = stack.pop();
+				stack.push(new Operation(Operation.Operator.DIV, l, r));
+				break;
 			default:
 				System.out.println("SolverTranslator : unsupported operation " + expr.getOp());
 				throw new RuntimeException();
@@ -218,7 +223,45 @@ public class SolverTranslator {
 		@Override
 		public void postVisit(MathRealExpression expr) {
 			// TODO Auto-generated method stub
-			System.out.println("SolverTranslator : unsupported operation " + expr.getOp());
+			Expression l;
+			Expression r;
+			switch (expr.getOp()) {
+			case ABS:
+				stack.push(new Operation(Operation.Operator.ABS, stack.pop()));
+				break;
+			case SQRT:
+				stack.push(new Operation(Operation.Operator.SQRT, stack.pop()));
+				break;
+			case SIN:
+				stack.push(new Operation(Operation.Operator.SIN, stack.pop()));
+				break;
+			case COS:
+				stack.push(new Operation(Operation.Operator.COS, stack.pop()));
+				break;
+			case ASIN:
+				stack.push(new Operation(Operation.Operator.ASIN, stack.pop()));
+				break;
+			case ACOS:
+				stack.push(new Operation(Operation.Operator.ACOS, stack.pop()));
+				break;
+			case TAN:
+				stack.push(new Operation(Operation.Operator.TAN, stack.pop()));
+				break;
+			case ATAN:
+				stack.push(new Operation(Operation.Operator.ATAN, stack.pop()));
+				break;
+			case LOG:
+				stack.push(new Operation(Operation.Operator.LOG, stack.pop()));
+				break;
+			case EXP:
+				stack.push(new Operation(Operation.Operator.EXP, stack.pop()));
+				break;
+			default:
+				throw new RuntimeException("SolverTranslator : unsupported operation " + expr.getOp());
+			
+			}
+			
+			//System.out.println("SolverTranslator : unsupported operation " + expr.getOp());
 		}
 
 	

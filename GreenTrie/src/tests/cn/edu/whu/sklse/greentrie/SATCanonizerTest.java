@@ -77,7 +77,7 @@ public class SATCanonizerTest {
 		IntVariable v = new IntVariable("aa", 0, 99);
 		IntConstant c = new IntConstant(0);
 		Operation o = new Operation(Operation.Operator.EQ, v, c);
-		check(o, "aa==0", "1*v==0");
+		check(o, "aa==0", "1*v+0==0");
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class SATCanonizerTest {
 		IntConstant c2 = new IntConstant(1);
 		Operation o2 = new Operation(Operation.Operator.NE, v2, c2);
 		Operation o3 = new Operation(Operation.Operator.AND, o1, o2);
-		check(o3, "(aa==0)&&(bb!=1)", "1*v==0", "1*v+-1!=0");
+		check(o3, "(aa==0)&&(bb!=1)", "1*v+0==0", "1*v+-1!=0");
 	}
 
 	@Test
@@ -100,7 +100,7 @@ public class SATCanonizerTest {
 		IntVariable v2 = new IntVariable("bb", 0, 99);
 		IntConstant c2 = new IntConstant(1);
 		Operation o2 = new Operation(Operation.Operator.NE, v2, c2);
-		check(o1, o2, "(aa==0)&&(bb!=1)", "1*v==0");
+		check(o1, o2, "(aa==0)&&(bb!=1)", "1*v+0==0");
 	}
 
 	@Test
@@ -116,8 +116,8 @@ public class SATCanonizerTest {
 		Operation o4 = new Operation(Operation.Operator.EQ, v4, v5);
 		Operation o34 = new Operation(Operation.Operator.AND, o3, o4);
 		Operation o234 = new Operation(Operation.Operator.AND, o2, o34);
-		check(o1, o234, "(aa==bb)&&((bb==cc)&&((cc==dd)&&(dd==ee)))", "1*v+-1*v==0", "1*v+-1*v==0", "1*v+-1*v==0",
-				"1*v+-1*v==0");
+		check(o1, o234, "(aa==bb)&&((bb==cc)&&((cc==dd)&&(dd==ee)))", "1*v+-1*v+0==0", "1*v+-1*v+0==0", "1*v+-1*v+0==0",
+				"1*v+-1*v+0==0");
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class SATCanonizerTest {
 		Operation o4 = new Operation(Operation.Operator.EQ, v5, v6);
 		Operation o34 = new Operation(Operation.Operator.AND, o3, o4);
 		Operation o234 = new Operation(Operation.Operator.AND, o2, o34);
-		check(o1, o234, "(aa==bb)&&((bb==cc)&&((cc==dd)&&(ee==ff)))", "1*v+-1*v==0", "1*v+-1*v==0", "1*v+-1*v==0");
+		check(o1, o234, "(aa==bb)&&((bb==cc)&&((cc==dd)&&(ee==ff)))", "1*v+-1*v+0==0", "1*v+-1*v+0==0", "1*v+-1*v+0==0");
 	}
 
 	@Test
@@ -210,7 +210,7 @@ public class SATCanonizerTest {
 		Operation o1 = new Operation(Operation.Operator.EQ, v1, c1);
 		IntConstant c2 = new IntConstant(1);
 		Operation o2 = new Operation(Operation.Operator.NE, v1, c2);
-		check(o1, o2, "(aa==0)&&(aa!=1)", "1*v==0");
+		check(o1, o2, "(aa==0)&&(aa!=1)", "1*v+0==0");
 	}
 
 	@Test
@@ -311,7 +311,7 @@ public class SATCanonizerTest {
 		RealVariable v = new RealVariable("aa", 0.0, 99.0);
 		RealConstant c = new RealConstant(0.0);
 		Operation o = new Operation(Operation.Operator.EQ, v, c);
-		check(o, "aa==0.0", "1.0*v==0");
+		check(o, "aa==0.0", "1.0*v+0.0==0.0");
 	}
 
 	@Test
@@ -322,7 +322,7 @@ public class SATCanonizerTest {
 		Operation o1 = new Operation(Operation.Operator.SUB, v1, v2);
 		Operation o2 = new Operation(Operation.Operator.MUL, o1, c1);
 		Operation o3 = new Operation(Operation.Operator.LT, o2, v1);
-		check(o3, "((aa-bb)*2.0)<aa", "1.0*v+-2.0*v<0");
+		check(o3, "((aa-bb)*2.0)<aa", "1.0*v+-2.0*v+0.0<0.0");
 	}
 
 	@Test
@@ -333,7 +333,7 @@ public class SATCanonizerTest {
 		Operation o1 = new Operation(Operation.Operator.SUB, v1, v2);
 		Operation o2 = new Operation(Operation.Operator.MUL, c1, o1);
 		Operation o3 = new Operation(Operation.Operator.LT, o2, v1);
-		check(o3, "(2.0*(aa-bb))<aa", "1.0*v+-2.0*v<0");
+		check(o3, "(2.0*(aa-bb))<aa", "1.0*v+-2.0*v+0.0<0.0");
 	}
 
 	@Test
@@ -349,8 +349,8 @@ public class SATCanonizerTest {
 		Operation o2 = new Operation(Operation.Operator.LT, v2, new Operation(Operation.Operator.ADD, v4, v5));
 		Operation o3 = new Operation(Operation.Operator.LT, v3, new Operation(Operation.Operator.ADD, v6, v7));
 		Operation o23 = new Operation(Operation.Operator.AND, o2, o3);
-		check(o1, o23, "(aa<(bb+cc))&&((bb<(dd+ee))&&(cc<(ff+gg)))", "1.0*v+-1.0*v+-1.0*v<0", "1.0*v+-1.0*v+-1.0*v<0",
-				"1.0*v+-1.0*v+-1.0*v<0");
+		check(o1, o23, "(aa<(bb+cc))&&((bb<(dd+ee))&&(cc<(ff+gg)))", "1.0*v+-1.0*v+-1.0*v+0.0<0.0", "1.0*v+-1.0*v+-1.0*v+0.0<0.0",
+				"1.0*v+-1.0*v+-1.0*v+0.0<0.0");
 	}
 
 	@Test
@@ -381,6 +381,58 @@ public class SATCanonizerTest {
 		Operation o2 = new Operation(Operation.Operator.LT, v1, c1);
 		Operation o3 = new Operation(Operation.Operator.AND, o1, o2);
 		check(o1, "aa==2", "1*v+-2==0");
+	}
+	
+	@Test
+	public void test27() {
+		RealConstant c1 = new RealConstant(2);
+		RealVariable v1 = new RealVariable("aa", 0.0, 99.9);
+		RealVariable v2 = new RealVariable("bb", 0.0, 99.9);
+		Operation o1 = new Operation(Operation.Operator.SUB, v1, v2);
+		Operation o2 = new Operation(Operation.Operator.SUB, o1, c1);
+		Operation o3 = new Operation(Operation.Operator.MUL, c1, o2);
+		Operation o4 = new Operation(Operation.Operator.LT, o3, v1);
+		check(o4, "(2.0*((aa-bb)-2.0))<aa", "1.0*v+-2.0*v+-4.0<0.0");
+	}
+	
+	@Test
+	public void test28() {
+		RealConstant c1 = new RealConstant(2);
+		RealConstant c2 = new RealConstant(0);
+		RealVariable v1 = new RealVariable("aa", 0.0, 99.9);
+		RealVariable v2 = new RealVariable("bb", 0.0, 99.9);
+		Operation o1 = new Operation(Operation.Operator.SUB, v1, v2);
+		Operation o2 = new Operation(Operation.Operator.SUB, o1, c2);
+		Operation o3 = new Operation(Operation.Operator.MUL, c1, o2);
+		Operation o4 = new Operation(Operation.Operator.LT, o3, v1);
+		check(o4, "(2.0*((aa-bb)-0.0))<aa", "1.0*v+-2.0*v+0.0<0.0");
+	}
+	
+	@Test
+	public void test29() {
+		RealConstant c1 = new RealConstant(2);
+		RealConstant c2 = new RealConstant(1);
+		RealVariable v1 = new RealVariable("aa", 0.0, 99.9);
+		RealVariable v2 = new RealVariable("bb", 0.0, 99.9);
+		Operation o1 = new Operation(Operation.Operator.SUB, v1, v2);
+		Operation o2 = new Operation(Operation.Operator.DIV, o1, c1);
+		Operation o3 = new Operation(Operation.Operator.DIV, o2, c2);
+		Operation o4 = new Operation(Operation.Operator.LT, o3, v1);
+		check(o4, "(((aa-bb)/2.0)/1.0)<aa", "-0.5*v+-0.5*v+0.0<0.0");
+	}
+	
+	@Test
+	public void test30() {
+		RealConstant c1 = new RealConstant(2);
+		RealConstant c2 = new RealConstant(1);
+		RealVariable v1 = new RealVariable("aa", 0.0, 99.9);
+		RealVariable v2 = new RealVariable("bb", 0.0, 99.9);
+		Operation o1 = new Operation(Operation.Operator.SUB, v1, v2);
+		Operation o2 = new Operation(Operation.Operator.DIV, o1, c1);
+		Operation o3 = new Operation(Operation.Operator.DIV, o2, c2);
+		Operation o4 = new Operation(Operation.Operator.SIN, o3);
+		Operation o5 = new Operation(Operation.Operator.LT, o4,c2);
+		check(o5, "(SIN(((aa-bb)/2.0)/1.0))<1.0", "1.0*SIN0.5*v+-0.5*v+-1.0<0.0");
 	}
 	
 
