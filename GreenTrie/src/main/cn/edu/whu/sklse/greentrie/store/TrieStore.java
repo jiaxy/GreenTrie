@@ -15,6 +15,7 @@ import java.util.concurrent.FutureTask;
 import org.apfloat.Apint;
 
 import cn.edu.whu.sklse.greentrie.canolize.Reducer;
+import cn.edu.whu.sklse.greentrie.logic.LogicalRelationUtil;
 import za.ac.sun.cs.green.Green;
 import za.ac.sun.cs.green.expr.Expression;
 import za.ac.sun.cs.green.expr.Operation;
@@ -48,6 +49,8 @@ public class TrieStore implements ExpressionStore {
 
 	// ConstraintCache trieCache = null;
 	long loadTime = 0;
+	String satSolver="";
+	
 
 	List<String> UNSATExp = new ArrayList<String>();
 
@@ -55,6 +58,12 @@ public class TrieStore implements ExpressionStore {
 		super();
 		if (config != null) {
 			TrieStore.config = config;
+		}
+		String s=conf.getProperty("green.service.sat");
+		if(s.contains("z3")){
+			satSolver="z3";
+		}else if(s.contains("coral")){
+			satSolver="coral";
 		}
 		String basePath = (String) TrieStore.config.get("constraint.store.basePath");
 		if (basePath != null) {
@@ -168,7 +177,8 @@ public class TrieStore implements ExpressionStore {
 		// System.out.println("stop");
 		// }
 		List<Operation> expList = new ArrayList<Operation>();
-		addToList(expList, (Operation) exp);
+		LogicalRelationUtil.splitIntoList(expList, (Operation)exp);
+		//(expList, (Operation) exp);
 		try {
 			// Collections.sort(expList);
 			expList = new Reducer().reduce(expList);
@@ -245,30 +255,24 @@ public class TrieStore implements ExpressionStore {
 		if (!(exp instanceof Operation)) {
 			return;
 		}
+		
 		List<Operation> expList = new LinkedList<Operation>();
-		addToList(expList, (Operation) exp);
+//		if(!satisfiable){
+//			expList=getUnsatCore();
+//		}
+//		
+		LogicalRelationUtil.splitIntoList(expList, (Operation)exp);
+		//addToList(expList, (Operation) exp);
 		// Collections.sort(expList);
 		expList = new Reducer().reduce(expList);
 		if (satisfiable) {
 			satisfiableTrie.saveConstraint(expList, solution, satisfiable);
 		} else {
 			unsatisfiableTrie.saveConstraint(expList, solution, satisfiable);
-			this.UNSATExp.add(exp.toString());
+			//this.UNSATExp.add(exp.toString());
 		}
 		this.totalSaveCount++;
 		this.totalSaveTime += System.currentTimeMillis() - t0;
-	}
-
-	private void addToList(List<Operation> expList, Operation exp) {
-		if (exp.getOperator().equals(Operation.Operator.AND)) {
-			Iterator<Expression> itr = exp.getOperands().iterator();
-			while (itr.hasNext()) {
-				Operation exp2 = (Operation) itr.next();
-				addToList(expList, exp2);
-			}
-		} else {
-			expList.add(exp);
-		}
 	}
 
 }

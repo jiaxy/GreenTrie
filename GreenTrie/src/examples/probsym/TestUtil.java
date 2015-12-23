@@ -23,17 +23,21 @@ public class TestUtil {
 		conf.setProperty("green.services",
 				"sat");
 		conf.setProperty("green.service.sat",
-				"(slice (canonize coral))");
+				"(slice (canonize z3))");
 		conf.setProperty("green.store",
 				"cn.edu.whu.sklse.greentrie.store.TrieStore");
-		conf.setProperty("green.service.sat.slice",
-				"cn.edu.whu.sklse.greentrie.slice.SATSlicerService");
+//		conf.setProperty("green.service.sat.slice",
+//				"cn.edu.whu.sklse.greentrie.slice.SATSlicerService");
+//		conf.setProperty("green.service.sat.canonize",
+//				"za.ac.sun.cs.green.service.canonizer.SATCanonizerService");
 		conf.setProperty("green.service.sat.canonize",
 				"cn.edu.whu.sklse.greentrie.canolize.SATCanonizerService");
 		conf.setProperty("green.service.sat.z3",
 				"cn.edu.whu.sklse.greentrie.z3.SATZ3JavaService");
 		conf.setProperty("green.service.sat.coral",
 				"cn.edu.whu.sklse.greentrie.coral.SATCoralService");
+		conf.setProperty("green.service.sat.choco",
+				"za.ac.sun.cs.green.service.choco.SATChocoService");
 		conf.setProperty("green.service.sat.iasolver",
 				"cn.edu.whu.sklse.greentrie.iasolver.SATIASolverService");
 		

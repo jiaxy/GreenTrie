@@ -5,6 +5,7 @@ import java.util.Set;
 
 import za.ac.sun.cs.green.Green;
 import za.ac.sun.cs.green.Instance;
+import za.ac.sun.cs.green.expr.Operation;
 import za.ac.sun.cs.green.store.ExpressionStore;
 import za.ac.sun.cs.green.util.Reporter;
 
@@ -26,14 +27,10 @@ public abstract class SATService extends BasicService {
 
 	@Override
 	public void report(Reporter reporter) {
-		reporter.report(getClass().getSimpleName(), "invocationCount = "
-				+ invocationCount);
-		reporter.report(getClass().getSimpleName(), "cacheHitCount = "
-				+ cacheHitCount);
-		reporter.report(getClass().getSimpleName(), "cacheMissCount = "
-				+ cacheMissCount);
-		reporter.report(getClass().getSimpleName(), "timeConsumption = "
-				+ timeConsumption);
+		reporter.report(getClass().getSimpleName(), "invocationCount = " + invocationCount);
+		reporter.report(getClass().getSimpleName(), "cacheHitCount = " + cacheHitCount);
+		reporter.report(getClass().getSimpleName(), "cacheMissCount = " + cacheMissCount);
+		reporter.report(getClass().getSimpleName(), "timeConsumption = " + timeConsumption);
 	}
 
 	@Override
@@ -43,7 +40,7 @@ public abstract class SATService extends BasicService {
 
 	@Override
 	public Set<Instance> processRequest(Instance instance) {
-		//long t1=System.currentTimeMillis();
+		// long t1=System.currentTimeMillis();
 		Boolean result = (Boolean) instance.getData(getClass());
 		if (result == null) {
 			result = solve0(instance);
@@ -51,26 +48,29 @@ public abstract class SATService extends BasicService {
 				instance.setData(getClass(), result);
 			}
 		}
-		//long t2=System.currentTimeMillis();
-		//System.out.println("time for processRequest:"+(t2-t1));
+		// long t2=System.currentTimeMillis();
+		// System.out.println("time for processRequest:"+(t2-t1));
 		return null;
 	}
 
 	private Boolean solve0(Instance instance) {
-		long t1=System.currentTimeMillis();
+		long t1 = System.currentTimeMillis();
 		invocationCount++;
 		Boolean result;
 		String key = SERVICE_KEY + instance.getFullExpression().toString();
-		result = (store instanceof ExpressionStore) ? 
-				((ExpressionStore) store)	.getBoolean(instance.getFullExpression()) 
-				: store.getBoolean(key);
+		result = (store instanceof ExpressionStore) ? ((ExpressionStore) store)
+				.getBoolean(instance.getFullExpression()) : store.getBoolean(key);
 		if (result == null) {
 			cacheMissCount++;
 			result = solve1(instance);
 			if (result != null) {
 				if (store instanceof ExpressionStore) {
-					Map<String,Object> solution=(Map<String, Object>) instance.getData("solution");			
-					((ExpressionStore) store).put(instance.getFullExpression(), result,solution);
+					Map<String, Object> solution = (Map<String, Object>) instance.getData("solution");
+					if(Boolean.FALSE.equals(result)){
+						((ExpressionStore) store).put(getUnsatCore((Operation)instance.getFullExpression()), result, solution);
+					}else{
+						((ExpressionStore) store).put(instance.getFullExpression(), result, solution);
+					}
 				} else {
 					store.put(key, result);
 				}
@@ -78,8 +78,8 @@ public abstract class SATService extends BasicService {
 		} else {
 			cacheHitCount++;
 		}
-		long t2=System.currentTimeMillis();
-		System.out.println("time for solving:"+(t2-t1));
+		long t2 = System.currentTimeMillis();
+		System.out.println("time for solving:" + (t2 - t1));
 		return result;
 	}
 
@@ -91,5 +91,9 @@ public abstract class SATService extends BasicService {
 	}
 
 	protected abstract Boolean solve(Instance instance);
+
+	protected Operation getUnsatCore(Operation op) {
+		return op;
+	};
 
 }

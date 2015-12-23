@@ -25,14 +25,14 @@ public class SATSlicerService extends BasicService {
 		if (result == null) {
 			final Instance p = instance.getParent();
 			final Expression f = (p == null) ? null : p.getFullExpression();
-			System.out.println("Slice Service:");
+			//System.out.println("Slice Service:");
 			
 			final Expression e = slicer.slice(instance.getExpression(), f);
 			final Instance i = new Instance(getSolver(), instance.getSource(), null, e);
 			result = Collections.singleton(i);
 			instance.setData(getClass(), result);
-			System.out.println("from:"+instance.getExpression()+",parent:"+f);
-			System.out.println("to:"+e);
+//			System.out.println("from:"+instance.getExpression()+",parent:"+f);
+//			System.out.println("to:"+e);
 		}
 		return result;
 	}

@@ -302,6 +302,18 @@ public class LogicalRelationUtil {
 ////		}
 //		return true;
 //	}
+	public static Operation buildOperationFromList(List<Operation> expList) {
+		Operation result=null;
+		for(Operation o:expList){
+			if (result==null){
+				result=o;
+			}else{
+				result=new Operation(Operator.AND,result,o);
+			}
+		}
+		return result;
+	}
+	
 	
 	public static void splitIntoList(List<Operation> expList, Operation exp) {
 		if (exp.getOperator().equals(Operation.Operator.AND)) {

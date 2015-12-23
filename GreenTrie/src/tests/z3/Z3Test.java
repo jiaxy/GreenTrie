@@ -10,6 +10,8 @@ import org.junit.Test;
 import z3.JavaExample.TestFailedException;
 
 import com.microsoft.z3.ApplyResult;
+import com.microsoft.z3.BitVecExpr;
+import com.microsoft.z3.BitVecNum;
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
@@ -55,6 +57,26 @@ public class Z3Test {
 		cfg.put("proof", "true");
 		ctx = new Context(cfg);
 	}
+	
+	@Test
+	 public void bitvectorExample1() throws TestFailedException, Z3Exception
+	    {
+	        System.out.println("BitvectorExample1");
+	        Log.append("BitvectorExample1");
+
+	        Sort bv_type = ctx.mkBitVecSort(32);
+	        BitVecExpr x = (BitVecExpr) ctx.mkConst("x", bv_type);
+	        BitVecNum zero = (BitVecNum) ctx.mkNumeral("0", bv_type);
+	        BitVecNum ten = ctx.mkBV(10, 32);
+	        BitVecExpr x_minus_ten = ctx.mkBVSub(x, ten);
+	        /* bvsle is signed less than or equal to */
+	        BoolExpr c1 = ctx.mkBVSLE(x, ten);
+	        BoolExpr c2 = ctx.mkBVSLE(x_minus_ten, zero);
+	        BoolExpr thm = ctx.mkIff(c1, c2);
+	        System.out
+	                .println("disprove: x - 10 <= 0 IFF x <= 10 for (32-bit) machine integers");
+	        disprove(ctx, thm, false);
+	    }
 	
 	
 	@Test

@@ -13,5 +13,7 @@ public interface ExpressionStore extends Store {
 	public Map<String,Object> getSolution(Expression exp);
 	
 	public void put(Expression exp,boolean satisfiable,Map<String,Object> solution);
+	
+	//public void putUnsatCore(Expression exp);
 
 }
