@@ -22,7 +22,7 @@ public class Trie implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	TrieNode rootState;
+	TrieNode rootNode;
 
 	private Properties config;
 
@@ -37,7 +37,7 @@ public class Trie implements Serializable {
 
 
 	public Trie() {
-		this.rootState = new TrieNode();
+		this.rootNode = new TrieNode();
 	}
 
 	public Trie(Properties config) {
@@ -49,7 +49,7 @@ public class Trie implements Serializable {
 		if (constraintList == null || size == 0) {
 			return;
 		}
-		TrieNode currentState = this.rootState;
+		TrieNode currentState = this.rootNode;
 		Expression prePrefix=null;
 		int logicDepth=0;
 		for (int i = 0; i < size; i++) {
@@ -174,7 +174,7 @@ public class Trie implements Serializable {
 //			}
 //		}
 		//return false;
-	boolean result = hasSubset(this.rootState, implySet);
+	boolean result = hasSubset(this.rootNode, implySet);
 	report.put("travel_Time", (System.currentTimeMillis()-t0));
 	return result;
 	}
@@ -328,7 +328,7 @@ public class Trie implements Serializable {
 //	}
 
 	public TrieNode getRootState() {
-		return rootState;
+		return rootNode;
 	}
 
 	public int getPatternCount() {

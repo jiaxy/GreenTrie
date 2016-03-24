@@ -19,10 +19,12 @@ import za.ac.sun.cs.green.expr.RealConstant;
 import cn.edu.whu.sklse.greentrie.logic.LogicalRelationUtil;
 
 /**
- * @author jiaxy The service which reduce the constraint. But it is weird that
+ * The service which reduce the constraint. But it is weird that
  *         sometimes the reduced constraints will cost much more time to solve
- *         in Z3, the possible reason is that it disturbs the incremental
+ *         in Z3, the possible reason is that it may disturb the incremental
  *         solving mechanism of Z3
+ *         
+ * @author jiaxy 
  */
 public class Reducer {
 
