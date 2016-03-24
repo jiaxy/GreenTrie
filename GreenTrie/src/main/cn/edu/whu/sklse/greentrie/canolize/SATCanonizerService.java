@@ -71,9 +71,9 @@ public class SATCanonizerService extends BasicService {
 			expression.accept(canonizationVisitor);
 			//Collections.sort(list);
 			Expression canonized = canonizationVisitor.getExpression();
-			System.out.println("canonized:" + canonized);
-			canonized = new Reducer().reduce(canonized);
-			System.out.println("reduced:" + canonized);
+//			System.out.println("canonized:" + canonized);
+//			canonized = new Reducer().reduce(canonized);
+//			System.out.println("reduced:" + canonized);
 			if (canonized != null) {
 				canonized = new Renamer(map, canonizationVisitor.getVariableSet()).rename(canonized);
 			}
