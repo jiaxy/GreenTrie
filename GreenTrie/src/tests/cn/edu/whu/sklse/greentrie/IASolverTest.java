@@ -100,6 +100,16 @@ public class IASolverTest {
 	public void test05() {
 		RealConstant c1 = new RealConstant(-2);
 		RealVariable v1 = new RealVariable("aa",  0.0, 99.9);
+		Operation o1 = new Operation(Operation.Operator.LT, v1, c1);
+		Operation o2 = new Operation(Operation.Operator.EQ, v1,c1);
+		Operation o3 = new Operation(Operation.Operator.AND, o1, o2);
+		check(o3, null, false);
+	}
+	
+	@Test
+	public void test06() {
+		RealConstant c1 = new RealConstant(-2);
+		RealVariable v1 = new RealVariable("aa",  0.0, 99.9);
 		RealVariable v2 = new RealVariable("bb",  0.0, 99.9);
 		Operation o1 = new Operation(Operation.Operator.SUB, v1, v2);
 		Operation o2 = new Operation(Operation.Operator.SQRT, o1);

@@ -239,8 +239,9 @@ public class UBTreeStore implements ExpressionStore {
 		return result;
 	}
 
+	
 	@Override
-	public Map<String, Object> getSolution(Expression exp) {
+	public Boolean query(Expression exp, Map<String, Object> solution) {
 		// TODO Auto-generated method stub
 		return null;
 	}

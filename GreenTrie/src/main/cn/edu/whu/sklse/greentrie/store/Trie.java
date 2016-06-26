@@ -22,7 +22,7 @@ public class Trie implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	TrieNode rootNode;
+	TrieNode rootState;
 
 	private Properties config;
 
@@ -37,7 +37,7 @@ public class Trie implements Serializable {
 
 
 	public Trie() {
-		this.rootNode = new TrieNode();
+		this.rootState = new TrieNode();
 	}
 
 	public Trie(Properties config) {
@@ -49,7 +49,7 @@ public class Trie implements Serializable {
 		if (constraintList == null || size == 0) {
 			return;
 		}
-		TrieNode currentState = this.rootNode;
+		TrieNode currentState = this.rootState;
 		Expression prePrefix=null;
 		int logicDepth=0;
 		for (int i = 0; i < size; i++) {
@@ -132,33 +132,12 @@ public class Trie implements Serializable {
 //	}
 	
 	@SuppressWarnings("unchecked")
-	public boolean hasSubset(List<Operation> target,Map<String,Object> report) {
+	public boolean hasSubset(List<Operation> target) {
 		long t0=System.currentTimeMillis();
-		List<Operation> target2 = new ArrayList<Operation>();
-		List<List<Operation>> implyList =new ArrayList<List<Operation>>();
-		Set<Operation> implySet=new HashSet<Operation>();
-		for(Operation o:target){
-			Expression prefix = LogicalRelationUtil.getPrefix(o);
-			Expression prefix2 = this.getExpMap().get(prefix.toString());
-			if (prefix2 == null) {
-				continue;
-			}
-			LogicalRelationUtil.setPrefix(o, prefix2);
-			List<Operation> imply = LogicalRelationUtil.getImply(getImplicationTree(prefix.toString()), o);
-			if(imply.isEmpty()){
-				continue;
-			}
-			implyList.add(imply);
-			implySet.addAll(imply);
-			target2.add(o);
-		}
-		long t1=System.currentTimeMillis();
-		report.put("implySet_buildTime", (t1-t0));
-		int size=target2.size();
-		if(target2.size()==0){
+		Set<Operation> implySet = getImplySet(target);
+		if(implySet.isEmpty()){
 			return false;
 		}
-		
 //		List<Operation> lastopList = implyList.get(size - 1);
 //		for (Operation o : lastopList) {
 //			List<State> states = this.expPositions.get(o);
@@ -174,12 +153,40 @@ public class Trie implements Serializable {
 //			}
 //		}
 		//return false;
-	boolean result = hasSubset(this.rootNode, implySet);
-	report.put("travel_Time", (System.currentTimeMillis()-t0));
+	boolean result = hasSubset(this.rootState, implySet);
+	//report.put("travel_Time", (System.currentTimeMillis()-t0));
 	return result;
 	}
+
+	private Set<Operation> getImplySet(List<Operation> target) {
+		//List<Operation> target2 = new ArrayList<Operation>();
+		List<List<Operation>> implyList =new ArrayList<List<Operation>>();
+		Set<Operation> implySet=new HashSet<Operation>();
+		for(Operation o:target){
+			Expression prefix = LogicalRelationUtil.getPrefix(o);
+			Expression prefix2 = this.getExpMap().get(prefix.toString());
+			if (prefix2 == null) {
+				continue;
+			}
+			LogicalRelationUtil.setPrefix(o, prefix2);
+			List<Operation> imply = LogicalRelationUtil.getImply(getImplicationTree(prefix.toString()), o);
+			if(imply.isEmpty()){
+				continue;
+			}
+			implyList.add(imply);
+			implySet.addAll(imply);
+			//target2.add(o);
+		}
+		//long t1=System.currentTimeMillis();
+		//report.put("implySet_buildTime", (t1-t0));
+//		int size=target2.size();
+//		if(target2.size()==0){
+//			return false;
+//		}
+		return implySet;
+	}
 	
-	public boolean hasSubset(TrieNode s, Set<Operation> implySet) {
+	private boolean hasSubset(TrieNode s, Set<Operation> implySet) {
 		if(s.getSuccess().isEmpty()){
 			return true;
 		}
@@ -194,9 +201,32 @@ public class Trie implements Serializable {
 		return false;
 	}
 	
+	public  void getCandidateSuluation(TrieNode s, List<Operation> expList,List<Map<String, Object>> solutions) {
+		Set<Operation> implySet = getImplySet(expList);
+		if(implySet.isEmpty()){
+			return;
+		}
+		
+		getCandidateSuluation(s,implySet,solutions) ;
+		
+		
+	}
+	
+	private  void getCandidateSuluation(TrieNode s, Set<Operation> implySet,List<Map<String, Object>> solutions) {
+		if(s.getSuccess().isEmpty()&&s!=this.rootState){
+			solutions.add(s.getSolution());
+			return;
+		}
+		for(Operation o:s.getSuccess().keySet()){
+			if(implySet.contains(o)){
+				getCandidateSuluation(s.nextNode(o),implySet,solutions);
+			}
+		}
+	}
+	
 
 	@SuppressWarnings("unchecked")
-	public boolean hasSubset(TrieNode currentState, List<Operation> target, int i, List<List<Operation>> implyList) {
+	private boolean hasSubset(TrieNode currentState, List<Operation> target, int i, List<List<Operation>> implyList) {
 		int size = target.size();
 //		if (currentState.getMinDepthofSuceess() > size - i) {
 //			return false;
@@ -219,8 +249,7 @@ public class Trie implements Serializable {
 		return false;
 	}
 
-	public boolean hasSuperSet(List<Operation> target,Map<String,Object> report) {
-		long t0=System.currentTimeMillis();
+	public boolean hasSuperSet(List<Operation> target) {
 		List<List<Operation>> impliedList =new ArrayList<List<Operation>>();
 		List<Integer> logicDepthList=new ArrayList<Integer>();
 		//Set<Operation> impliedSet=new HashSet<Operation>();
@@ -248,11 +277,7 @@ public class Trie implements Serializable {
 				implied.add(0,o);
 			}
 			impliedList.add(implied);
-			//impliedSet.addAll(implied);
-			//o.setBeImplied(implied);
 		}
-		long t1=System.currentTimeMillis();
-		report.put("reverseImplySet_buildTime", (t1-t0));
 		int size = target.size();
 		List<Operation> lastopList = impliedList.get(size - 1);
 		int pathCount=0;
@@ -266,16 +291,10 @@ public class Trie implements Serializable {
 //				
 				if (isSuperSet(s.getPrevious(), size - 2,impliedList,logicDepthList)) {
 					long t2=System.currentTimeMillis();
-					report.put("travel_time", (t2-t1));
-					report.put("travel_pathCount", pathCount);
-					report.put("total_time", (t2-t0));
 					return true;
 				}
 			}
 		}
-		long t2=System.currentTimeMillis();
-		report.put("travel_time", (t2-t1));
-		report.put("total_time", (t2-t0));
 		return false;
 	}
 
@@ -328,7 +347,7 @@ public class Trie implements Serializable {
 //	}
 
 	public TrieNode getRootState() {
-		return rootNode;
+		return rootState;
 	}
 
 	public int getPatternCount() {

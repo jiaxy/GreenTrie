@@ -3,17 +3,20 @@ package cn.edu.whu.sklse.greentrie.store;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 import org.apfloat.Apint;
 
+import cn.edu.whu.sklse.SimpleProfiler;
 import cn.edu.whu.sklse.greentrie.canolize.Reducer;
 import cn.edu.whu.sklse.greentrie.logic.LogicalRelationUtil;
 import za.ac.sun.cs.green.Green;
@@ -130,40 +133,41 @@ public class TrieStore implements ExpressionStore {
 
 	@Override
 	public String getString(String key) {
-		return null;
+		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
 	}
 
 	@Override
 	public Boolean getBoolean(String key) {
-		return null;
+		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
 	}
 
 	@Override
 	public void put(String key, Serializable value) {
+		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
 	}
 
 	@Override
 	public Integer getInteger(String key) {
-		return null;
+		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
 	}
 
 	@Override
 	public Long getLong(String key) {
-		return null;
+		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
 	}
 
 	@Override
 	public Float getFloat(String key) {
-		return null;
+		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
 	}
 
 	@Override
 	public Double getDouble(String key) {
-		return null;
+		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
 	}
 
 	public Apint getApfloatInteger(String key) {
-		return null;
+		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
 	}
 
 	@Override
@@ -178,69 +182,85 @@ public class TrieStore implements ExpressionStore {
 		// }
 		List<Operation> expList = new ArrayList<Operation>();
 		LogicalRelationUtil.splitIntoList(expList, (Operation)exp);
-		//(expList, (Operation) exp);
-		try {
-			// Collections.sort(expList);
-			expList = new Reducer().reduce(expList);
-			SubSetTask subSetTask = new SubSetTask(unsatisfiableTrie, expList);
-			FutureTask<Boolean> task1 = new FutureTask<Boolean>(subSetTask);
-			SuperSetTask superSetTask = new SuperSetTask(satisfiableTrie, expList);
-			FutureTask<Boolean> task2 = new FutureTask<Boolean>(superSetTask);
-			task1.run();
-			task2.run();
-			if (task1.get()) {
-				unsatCount++;
-				long t1 = System.currentTimeMillis() - t0;
-				unsatQueryTime += t1;
-				if (t1 > this.maxUNSATTime) {
-					this.maxUNSATTime = t1;
-					this.maxUNSATReport = subSetTask.report;
-				}
-				// this.maxUNSATTime=Math.max(this.maxUNSATTime,
-				// System.currentTimeMillis()-t0);
-				result = false;
-			} else if (task2.get()) {
-				satCount++;
-				long t1 = System.currentTimeMillis() - t0;
-				long reverseImplySet_buildTime = (Long) superSetTask.report.get("reverseImplySet_buildTime");
-				long travel_time = (Long) superSetTask.report.get("travel_time");
-				// long total_time=(Long) superSetTask.report.get("total_time");
-				satQueryTime += t1;
-				this.SATTravel_time += travel_time;
-				this.RISBuildTime += reverseImplySet_buildTime;
-				if (t1 > this.maxSATTime) {
-					this.maxSATTime = t1;
-					this.maxSATReport = superSetTask.report;
-				}
-				result = true;
+		expList = new Reducer().reduce(expList);
+		boolean r1=unsatisfiableTrie.hasSubset(expList);
+		if(r1){
+			System.out.println("found UNSAT result for:" + exp);
+			return false;
+		}else{
+			boolean r2=satisfiableTrie.hasSuperSet(expList);
+			if(r2){
+				System.out.println("found SAT result for:" + exp);
+				return true;
 			}
-
-			if (result == null) {
-				this.misCount++;
-				this.missMatchTime += System.currentTimeMillis() - t0;
-				this.maxMissMatchTime = Math.max(this.maxMissMatchTime, System.currentTimeMillis() - t0);
-				// this.missExp.add(exp.toString());
-				System.out.println("cannot find the result for :" + exp);
-			} else {
-				System.out.println("found " + result + "  result for:" + exp);
-			}
-
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			this.totalQueryCount++;
-			this.totalQueryTime += System.currentTimeMillis() - t0;
+			System.out.println("found no result for:" + exp);
+			return null;
 		}
-		//System.out.println("found sovling result " + result + " for : " + exp);
-		return result;
+		
+		//(expList, (Operation) exp);
+//		try {
+//			// Collections.sort(expList);
+//			expList = new Reducer().reduce(expList);
+//			SubSetTask subSetTask = new SubSetTask(unsatisfiableTrie, expList);
+//			FutureTask<Boolean> task1 = new FutureTask<Boolean>(subSetTask);
+//			SuperSetTask superSetTask = new SuperSetTask(satisfiableTrie, expList);
+//			FutureTask<Boolean> task2 = new FutureTask<Boolean>(superSetTask);
+//			task1.run();
+//			task2.run();
+//			if (task1.get()) {
+//				unsatCount++;
+//				long t1 = System.currentTimeMillis() - t0;
+//				unsatQueryTime += t1;
+//				if (t1 > this.maxUNSATTime) {
+//					this.maxUNSATTime = t1;
+//					this.maxUNSATReport = subSetTask.report;
+//				}
+//				// this.maxUNSATTime=Math.max(this.maxUNSATTime,
+//				// System.currentTimeMillis()-t0);
+//				result = false;
+//			} else if (task2.get()) {
+//				satCount++;
+////				long t1 = System.currentTimeMillis() - t0;
+////				long reverseImplySet_buildTime = (Long) superSetTask.report.get("reverseImplySet_buildTime");
+////				long travel_time = (Long) superSetTask.report.get("travel_time");
+//				// long total_time=(Long) superSetTask.report.get("total_time");
+////				satQueryTime += t1;
+////				this.SATTravel_time += travel_time;
+////				this.RISBuildTime += reverseImplySet_buildTime;
+////				if (t1 > this.maxSATTime) {
+////					this.maxSATTime = t1;
+////					this.maxSATReport = superSetTask.report;
+////				}
+//				result = true;
+//			}
+//
+//			if (result == null) {
+//				
+//				this.misCount++;
+//				this.missMatchTime += System.currentTimeMillis() - t0;
+//				this.maxMissMatchTime = Math.max(this.maxMissMatchTime, System.currentTimeMillis() - t0);
+//				// this.missExp.add(exp.toString());
+//				System.out.println("cannot find the result for :" + exp);
+//			} else {
+//				System.out.println("found " + result + "  result for:" + exp);
+//			}
+//
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (ExecutionException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} finally {
+//			this.totalQueryCount++;
+//			this.totalQueryTime += System.currentTimeMillis() - t0;
+//		}
+//		System.out.println("found sovling result " + result + " for : " + exp);
+//		return result;
 	}
 
 	@Override
-	public Map<String, Object> getSolution(Expression exp) {
+	public Boolean query(Expression exp,Map<String, Object> solution) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -248,7 +268,7 @@ public class TrieStore implements ExpressionStore {
 	@Override
 	public void put(Expression exp, boolean satisfiable, Map<String, Object> solution) {
 		long t0 = System.currentTimeMillis();
-		System.out.println("put into " + satisfiable + " trie: " + exp);
+		System.out.println("put into " + satisfiable + " trie: " + exp +"with solution:"+solution);
 		// if("(((((((((((1*v0)+(-1*v1))+0)<=0)&&((((-1*v0)+(1*v2))+0)<=0))&&((((1*v2)+(-1*v3))+0)<=0))&&((((1*v2)+(-1*v4))+0)!=0))&&((((1*v2)+(-1*v4))+0)==0))&&(((-1*v0)+1)<=0))&&(((-1*v1)+1)<=0))&&(((-1*v2)+1)<=0))&&(((-1*v3)+1)<=0)".equals(exp.toString())){
 		// System.out.println("here");
 		// }
@@ -260,7 +280,7 @@ public class TrieStore implements ExpressionStore {
 //		if(!satisfiable){
 //			expList=getUnsatCore();
 //		}
-//		
+		
 		LogicalRelationUtil.splitIntoList(expList, (Operation)exp);
 		//addToList(expList, (Operation) exp);
 		// Collections.sort(expList);
@@ -290,7 +310,37 @@ class SuperSetTask implements Callable<Boolean> {
 
 	@Override
 	public Boolean call() throws Exception {
-		return trie.hasSuperSet(expList, report);
+		
+		if(trie.hasSuperSet(expList)) {
+			return true;
+		}
+		//Set<Operation> eset=new HashSet<Operation>();
+		//eset.addAll(expList);
+		SimpleProfiler.start("valueChecking");
+		List<Map<String, Object>> solutions = new ArrayList<Map<String, Object>>();
+		trie.getCandidateSuluation(trie.rootState, expList, solutions);
+		
+		
+		for(Map<String, Object> s:solutions){
+			System.out.println("check candidate solution: "+s+" for exprssion :"+expList);
+			boolean sat=true;
+			for(Expression exp:expList){
+				Object r = ExpressionEvaluator.evaluate(exp, s);
+				if(Boolean.FALSE.equals(r)){
+					sat=false;
+					break;
+				}
+			}
+			if(sat) {
+				System.out.println("found solutions: "+s);
+				trie.saveConstraint(expList, s, sat);
+				SimpleProfiler.stop("valueChecking");
+				return true;
+			}
+		}
+		
+		SimpleProfiler.stop("valueChecking");
+		return false;
 	}
 
 }
@@ -308,6 +358,6 @@ class SubSetTask implements Callable<Boolean> {
 
 	@Override
 	public Boolean call() throws Exception {
-		return trie.hasSubset(expList, report);
+		return trie.hasSubset(expList);
 	}
 }

@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src/main"/>
 	<classpathentry kind="src" path="src/tests"/>
-	<classpathentry kind="src" path="src/examples"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jpf-symbc"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jpf-core"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

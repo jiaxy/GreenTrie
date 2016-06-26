@@ -3,6 +3,7 @@ package za.ac.sun.cs.green.service;
 import java.util.Map;
 import java.util.Set;
 
+import cn.edu.whu.sklse.SimpleProfiler;
 import za.ac.sun.cs.green.Green;
 import za.ac.sun.cs.green.Instance;
 import za.ac.sun.cs.green.expr.Operation;
@@ -31,6 +32,7 @@ public abstract class SATService extends BasicService {
 		reporter.report(getClass().getSimpleName(), "cacheHitCount = " + cacheHitCount);
 		reporter.report(getClass().getSimpleName(), "cacheMissCount = " + cacheMissCount);
 		reporter.report(getClass().getSimpleName(), "timeConsumption = " + timeConsumption);
+		reporter.report(getClass().getSimpleName(), "breakdown:" + SimpleProfiler.getResults());
 	}
 
 	@Override
@@ -57,19 +59,30 @@ public abstract class SATService extends BasicService {
 		long t1 = System.currentTimeMillis();
 		invocationCount++;
 		Boolean result;
+		SimpleProfiler.start("query");
 		String key = SERVICE_KEY + instance.getFullExpression().toString();
 		result = (store instanceof ExpressionStore) ? ((ExpressionStore) store)
 				.getBoolean(instance.getFullExpression()) : store.getBoolean(key);
+		SimpleProfiler.stop("query");
 		if (result == null) {
 			cacheMissCount++;
+			SimpleProfiler.start("solve");
 			result = solve1(instance);
+			SimpleProfiler.stop("solve");
 			if (result != null) {
 				if (store instanceof ExpressionStore) {
 					Map<String, Object> solution = (Map<String, Object>) instance.getData("solution");
 					if(Boolean.FALSE.equals(result)){
-						((ExpressionStore) store).put(getUnsatCore((Operation)instance.getFullExpression()), result, solution);
+						SimpleProfiler.start("getUnsatCore");
+						Operation core = getUnsatCore((Operation)instance.getFullExpression());
+						SimpleProfiler.stop("getUnsatCore");
+						SimpleProfiler.start("save");
+						((ExpressionStore) store).put(core, result, solution);
+						SimpleProfiler.stop("save");
 					}else{
+						SimpleProfiler.start("save");
 						((ExpressionStore) store).put(instance.getFullExpression(), result, solution);
+						SimpleProfiler.stop("save");
 					}
 				} else {
 					store.put(key, result);

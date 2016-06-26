@@ -53,7 +53,7 @@ public class RealConstant extends Constant {
 	public boolean equals(Object object) {
 		if (object instanceof RealConstant) {
 			RealConstant constant = (RealConstant) object;
-			return value == constant.value;
+			return this.getFractionValue().equals(constant.getFractionValue());
 		} else {
 			return false;
 		}

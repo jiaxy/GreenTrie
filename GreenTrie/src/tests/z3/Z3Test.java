@@ -78,6 +78,28 @@ public class Z3Test {
 	        disprove(ctx, thm, false);
 	    }
 	
+	@Test
+	 public void bitvectorExample2() throws TestFailedException, Z3Exception
+	    {
+	        System.out.println("BitvectorExample1");
+	        Log.append("BitvectorExample1");
+
+	        Sort bv_type = ctx.mkBitVecSort(32);
+	     
+	        BitVecExpr x = (BitVecExpr) ctx.mkConst("x", bv_type);
+	        BitVecNum zero = (BitVecNum) ctx.mkNumeral("0", bv_type);
+	        BitVecNum ten =  (BitVecNum) ctx.mkNumeral("-1", bv_type);
+	        BitVecExpr minus_x = ctx.mkBVSub(zero, x);
+	        BitVecExpr sum = ctx.mkBVAdd(minus_x, minus_x);
+	        /* bvsle is signed less than or equal to */
+	        //BoolExpr c1 = ctx.mkBVSLE(x, ten);
+	        BoolExpr c2 = ctx.mkEq(minus_x, ten);
+	        //BoolExpr thm = ctx.mkIff(c1, c2);
+	        
+	        disprove(ctx, c2, true);
+	    }
+	
+	
 	
 	@Test
 	public void incrementalTest() throws Z3Exception, TestFailedException{
