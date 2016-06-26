@@ -1,0 +1,10 @@
+target=WBS
+classpath=build
+sourcepath=src/examples
+symbolic.method = WBS.launch(sym#sym#sym#sym#sym#sym#sym#sym#sym)
+symbolic.minint=-100
+symbolic.maxint=100
+symbolic.dp=z3
+vm.storage.class=nil
+listener = .symbc.SymbolicListener
+#listener = .listener.ChoiceTracker

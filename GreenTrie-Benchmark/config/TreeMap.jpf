@@ -1,0 +1,8 @@
+#@include= green.jpf
+@include= greentrie.jpf
+
+target=org.sklse.TreeMap
+symbolic.method=org.sklse.TreeMap.put(sym)
+symbolic.min_int = 0
+symbolic.max_int = 1024
+

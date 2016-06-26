@@ -1,0 +1,8 @@
+#@include= green.jpf
+@include= greentrie.jpf
+
+target=org.sklse.BinomialHeap
+symbolic.method=org.sklse.BinomialHeap.insert(sym)
+symbolic.min_int = 0
+symbolic.max_int = 9
+

@@ -1,0 +1,9 @@
+Install:
+
+ (1) set site.properties as following:
+ jpf-core=/Users/jiaxy/Dropbox/repository/jpf/jpf-core
+ jpf-symbc=/Users/jiaxy/Dropbox/repository/jpf/jpf-symbc
+ extensions=${jpf-core},${jpf-symbc}
+ 
+
+ 
