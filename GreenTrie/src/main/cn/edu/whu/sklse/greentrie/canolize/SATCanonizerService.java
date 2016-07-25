@@ -66,13 +66,18 @@ public class SATCanonizerService extends BasicService {
 			invocations++;
 			OrderingVisitor orderingVisitor = new OrderingVisitor();
 			expression.accept(orderingVisitor);
-			expression = orderingVisitor.getExpression();
+			Expression expression2 = orderingVisitor.getExpression();
+			if(!expression.equals(expression2)){
+				System.out.println("expression:"+expression);
+				System.out.println("expression after order:"+expression2);
+			}
+			expression = expression2;
 			CanonizationVisitor canonizationVisitor = new CanonizationVisitor();
 			expression.accept(canonizationVisitor);
 			//Collections.sort(list);
 			Expression canonized = canonizationVisitor.getExpression();
 //			System.out.println("canonized:" + canonized);
-//			canonized = new Reducer().reduce(canonized);
+			canonized = new Reducer().reduce(canonized);
 //			System.out.println("reduced:" + canonized);
 			if (canonized != null) {
 				canonized = new Renamer(map, canonizationVisitor.getVariableSet()).rename(canonized);

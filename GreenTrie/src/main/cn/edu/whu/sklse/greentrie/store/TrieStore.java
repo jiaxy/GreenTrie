@@ -30,20 +30,20 @@ public class TrieStore implements ExpressionStore {
 	public static String basePath = "store/constraint";
 	Trie satisfiableTrie = null;
 	Trie unsatisfiableTrie = null;
-	long maxMatchTime = 0;
-	long maxSATTime = 0;
-	long maxUNSATTime = 0;
-	long maxMissMatchTime = 0;
-	long satCount = 0;
-	long unsatCount = 0;
-	long misCount = 0;
-	long satQueryTime = 0;
-	long unsatQueryTime = 0;
-	long missMatchTime = 0;
-	long totalQueryCount = 0;
-	long totalQueryTime = 0;
-	long RISBuildTime = 0;
-	long SATTravel_time = 0;
+//	long maxMatchTime = 0;
+//	long maxSATTime = 0;
+//	long maxUNSATTime = 0;
+//	long maxMissMatchTime = 0;
+//	long satCount = 0;
+//	long unsatCount = 0;
+//	long misCount = 0;
+//	long satQueryTime = 0;
+//	long unsatQueryTime = 0;
+//	long missMatchTime = 0;
+//	long totalQueryCount = 0;
+//	long totalQueryTime = 0;
+//	long RISBuildTime = 0;
+//	long SATTravel_time = 0;
 	long totalSaveCount = 0;
 	long totalSaveTime = 0;
 
@@ -91,38 +91,38 @@ public class TrieStore implements ExpressionStore {
 
 	@Override
 	public void report(Reporter reporter) {
-		reporter.report(getClass().getSimpleName(), "totalSave_Count_Time = " + this.totalSaveCount + ","
-				+ totalSaveTime);
-		reporter.report(getClass().getSimpleName(), "totalQuery_Count_Time = " + this.totalQueryCount + ","
-				+ totalQueryTime);
-		reporter.report(getClass().getSimpleName(), "maxMatchTime = " + maxMatchTime);
-		reporter.report(getClass().getSimpleName(), "maxMissTime = " + maxMissMatchTime);
-		reporter.report(getClass().getSimpleName(), "maxSATTime = " + maxSATTime);
-		reporter.report(getClass().getSimpleName(), "maxUNSATTime = " + maxUNSATTime);
-		reporter.report(getClass().getSimpleName(), "maxSATReport = " + maxSATReport);
-		reporter.report(getClass().getSimpleName(), "maxUNSATReport = " + maxUNSATReport);
-
-		reporter.report(getClass().getSimpleName(), "SAT_Count_Time = " + satCount + "," + satQueryTime);
-		reporter.report(getClass().getSimpleName(), "SAT_RISBuildTime = " + RISBuildTime);
-		reporter.report(getClass().getSimpleName(), "SAT_Travel_time = " + SATTravel_time);
-		reporter.report(getClass().getSimpleName(), "UNSA_Count_Time = " + unsatCount + "," + unsatQueryTime);
-		reporter.report(getClass().getSimpleName(), "MISS_Count_Time = " + misCount + "," + missMatchTime);
-
-		reporter.report(getClass().getSimpleName(), "SAT_ConstraintCount = " + satisfiableTrie.getPatternCount());
-		reporter.report(getClass().getSimpleName(), "UNSAT_ConstraintCount = " + unsatisfiableTrie.getPatternCount());
-		// reporter.report(getClass().getSimpleName(), "SAT_ExpressionCount = "
-		// + satisfiableTrie.getExpMap().size());
-		// reporter.report(getClass().getSimpleName(),
-		// "UNSAT_ExpressionCount = " + unsatisfiableTrie.getExpMap().size());
-		reporter.report(getClass().getSimpleName(), "SAT_ImplySubGraphCount = "
-				+ satisfiableTrie.getImplicationTreeHeads().size());
-		reporter.report(getClass().getSimpleName(), "UNSAT_ImplySubGraphCount = "
-				+ unsatisfiableTrie.getImplicationTreeHeads().size());
+//		reporter.report(getClass().getSimpleName(), "totalSave_Count_Time = " + this.totalSaveCount + ","
+//				+ totalSaveTime);
+//		reporter.report(getClass().getSimpleName(), "totalQuery_Count_Time = " + this.totalQueryCount + ","
+//				+ totalQueryTime);
+//		reporter.report(getClass().getSimpleName(), "maxMatchTime = " + maxMatchTime);
+//		reporter.report(getClass().getSimpleName(), "maxMissTime = " + maxMissMatchTime);
+//		reporter.report(getClass().getSimpleName(), "maxSATTime = " + maxSATTime);
+//		reporter.report(getClass().getSimpleName(), "maxUNSATTime = " + maxUNSATTime);
+//		reporter.report(getClass().getSimpleName(), "maxSATReport = " + maxSATReport);
+//		reporter.report(getClass().getSimpleName(), "maxUNSATReport = " + maxUNSATReport);
+//
+//		reporter.report(getClass().getSimpleName(), "SAT_Count_Time = " + satCount + "," + satQueryTime);
+//		reporter.report(getClass().getSimpleName(), "SAT_RISBuildTime = " + RISBuildTime);
+//		reporter.report(getClass().getSimpleName(), "SAT_Travel_time = " + SATTravel_time);
+//		reporter.report(getClass().getSimpleName(), "UNSA_Count_Time = " + unsatCount + "," + unsatQueryTime);
+//		reporter.report(getClass().getSimpleName(), "MISS_Count_Time = " + misCount + "," + missMatchTime);
+//
+//		reporter.report(getClass().getSimpleName(), "SAT_ConstraintCount = " + satisfiableTrie.getPatternCount());
+//		reporter.report(getClass().getSimpleName(), "UNSAT_ConstraintCount = " + unsatisfiableTrie.getPatternCount());
+//		// reporter.report(getClass().getSimpleName(), "SAT_ExpressionCount = "
+//		// + satisfiableTrie.getExpMap().size());
+//		// reporter.report(getClass().getSimpleName(),
+//		// "UNSAT_ExpressionCount = " + unsatisfiableTrie.getExpMap().size());
+//		reporter.report(getClass().getSimpleName(), "SAT_ImplySubGraphCount = "
+//				+ satisfiableTrie.getImplicationTreeHeads().size());
+//		reporter.report(getClass().getSimpleName(), "UNSAT_ImplySubGraphCount = "
+//				+ unsatisfiableTrie.getImplicationTreeHeads().size());
 		// String m="";
 		
-		 for(String s:UNSATExp){
-			 System.out.println(s);
-		 }
+//		 for(String s:UNSATExp){
+//			 System.out.println(s);
+//		 }
 		// reporter.report(getClass().getSimpleName(), "UNSATExp = " +m);
 	}
 

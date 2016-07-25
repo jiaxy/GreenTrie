@@ -32,7 +32,7 @@ public abstract class SATService extends BasicService {
 		reporter.report(getClass().getSimpleName(), "cacheHitCount = " + cacheHitCount);
 		reporter.report(getClass().getSimpleName(), "cacheMissCount = " + cacheMissCount);
 		reporter.report(getClass().getSimpleName(), "timeConsumption = " + timeConsumption);
-		reporter.report(getClass().getSimpleName(), "breakdown:" + SimpleProfiler.getResults());
+		reporter.report(getClass().getSimpleName(), "\n*********** profiles*********************\n" +SimpleProfiler.getResults()+"\n**************************************\n");
 	}
 
 	@Override
