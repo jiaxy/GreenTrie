@@ -508,7 +508,7 @@ public class SATCanonizerService extends BasicService {
 					r = (Operation) right;
 				}
 			}
-			SortedMap<Expression, Number> coefficients = new TreeMap<Expression, Number>();
+			Map<Expression, Number> coefficients = new HashMap<Expression, Number>();
 			Constant c;
 			Expression v;
 			Number k;
@@ -554,9 +554,47 @@ public class SATCanonizerService extends BasicService {
 					coefficients.put(v, NumberUtil.add(NumberUtil.getValue(c), k));
 				}
 			}
+			Expression result = buildOperation(coefficients);
+			if ((result == null) || (result instanceof Constant)) {
+				return NumberUtil.getConstant(s);
+			} else if (s.doubleValue()!= 0.0) {
+				result= new Operation(Operation.Operator.ADD, result, NumberUtil.getConstant(s));
+			}
+			System.out.println("merge:"+left+" and"+right);
+			System.out.println("result:"+result);
+			return result;
+		}
 
+		private Expression buildOperation(Map<Expression, Number> coefficients) {
 			Expression lr = null;
-			for (Map.Entry<Expression, Number> e : coefficients.entrySet()) {
+//			for(int i=0;i<coefficients.size();i++){
+//				Map.Entry<Expression, Number> max=null;
+//				for (Map.Entry<Expression, Number> e : coefficients.entrySet()) {
+//					if(max==null){
+//						max=e;
+//					}else {
+//						float d=NumberUtil.sub(e.getValue(),max.getValue()).floatValue();
+//						if(d>0.0){
+//							max=e;
+//						}else if(d==0&&e.getKey().compareTo(max.getKey())>0){
+//							max=e;
+//						}
+//					}
+//				}
+//
+//				Number coef = max.getValue();
+//				if (coef.doubleValue() != 0.0) {
+//					Operation term = new Operation(Operation.Operator.MUL, NumberUtil.getConstant(coef), max.getKey());
+//					if (lr == null) {
+//						lr = term;
+//					} else {
+//						lr = new Operation(Operation.Operator.ADD, lr, term);
+//					}
+//				}
+//				coefficients.remove(max);
+//			}
+//			
+			for(Map.Entry<Expression, Number> e:coefficients.entrySet()){
 				Number coef = e.getValue();
 				if (coef.doubleValue() != 0.0) {
 					Operation term = new Operation(Operation.Operator.MUL, NumberUtil.getConstant(coef), e.getKey());
@@ -566,17 +604,12 @@ public class SATCanonizerService extends BasicService {
 						lr = new Operation(Operation.Operator.ADD, lr, term);
 					}
 				}
+				coefficients.remove(e);
 			}
-			if ((lr == null) || (lr instanceof Constant)) {
-				return NumberUtil.getConstant(s);
-			} else if (s.doubleValue() == 0.0) {
-				return lr;
-			 }
-		
-			else {
-				return new Operation(Operation.Operator.ADD, lr, NumberUtil.getConstant(s));
-			}
+			return lr;
 		}
+		
+		
 
 		private boolean hasRightConstant(Expression expression) {
 			return isAddition(expression) && (getRightExpression(expression) instanceof Constant);
