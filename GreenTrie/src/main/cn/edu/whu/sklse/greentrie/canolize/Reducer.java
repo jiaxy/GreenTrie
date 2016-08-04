@@ -121,13 +121,14 @@ public class Reducer {
 	}
 
 	private Operation buildOperation(Expression op, Number num, Operator operator) {
-		Constant c1=null;
+		
+		Expression left=null;
 		if(NumberUtil.containtReal(op)){
-			c1=(num.doubleValue() == 0.0)?Operation.REAL_ZERO:new RealConstant(num.doubleValue());
-			return new Operation(operator, new Operation(Operator.ADD, op, c1), Operation.REAL_ZERO);
+			left=(num.doubleValue() == 0.0)?op:new Operation(Operator.ADD, op, new RealConstant(num.doubleValue()));
+			return new Operation(operator, left, Operation.REAL_ZERO);
 		}else{
-			c1=(num.intValue() == 0)?Operation.ZERO:new IntConstant(num.intValue());
-			return new Operation(operator, new Operation(Operator.ADD, op, c1), Operation.ZERO);
+			left=(num.intValue() == 0)?op:new Operation(Operator.ADD, op, new IntConstant(num.intValue()));
+			return new Operation(operator, left, Operation.ZERO);
 		}
 	}
 

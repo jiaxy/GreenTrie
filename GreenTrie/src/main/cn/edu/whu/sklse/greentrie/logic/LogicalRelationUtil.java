@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import cn.edu.whu.sklse.SimpleProfiler;
 import cn.edu.whu.sklse.greentrie.canolize.NumberUtil;
 import za.ac.sun.cs.green.expr.Constant;
 import za.ac.sun.cs.green.expr.Expression;
@@ -36,12 +37,16 @@ public class LogicalRelationUtil {
 	}
 
 	public static boolean imply(Operation left, Operation right) {
+		SimpleProfiler.start("imply");
+		boolean result=false;
 		if(comparators.contains(left.getOperator())&&comparators.contains(right.getOperator())){
-			return NumberComparasionImply(left,right);
+			
+			result= NumberComparasionImply(left,right);
 		}else{
 			//TODO
 		}
-		return false;
+		SimpleProfiler.stop("imply");
+		return result;
 	}
 	
 	

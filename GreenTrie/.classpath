@@ -19,7 +19,7 @@
 	<classpathentry kind="lib" path="lib/green.jar"/>
 	<classpathentry kind="lib" path="lib/JSAP-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/foundry-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/bitsy-1.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/bitsy-1.5.1.jar" sourcepath="/Users/jiaxy/bitsy/src/main/java"/>
 	<classpathentry kind="lib" path="lib/blueprints-core-2.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/ness-core-1.5.0.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.3.jar"/>

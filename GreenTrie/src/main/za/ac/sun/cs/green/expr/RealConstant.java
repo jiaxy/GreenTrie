@@ -3,6 +3,9 @@ package za.ac.sun.cs.green.expr;
 import org.apache.commons.math.fraction.Fraction;
 import org.apache.commons.math.fraction.FractionConversionException;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 public class RealConstant extends Constant {
 
@@ -10,7 +13,8 @@ public class RealConstant extends Constant {
 	
 	private Fraction value; //modified by Jia
 
-	public RealConstant(final double value) {
+	@JsonCreator 
+	public RealConstant(@JsonProperty("value")final double value) {
 		this.value=null;
 		try {
 			this.value=new Fraction(value);

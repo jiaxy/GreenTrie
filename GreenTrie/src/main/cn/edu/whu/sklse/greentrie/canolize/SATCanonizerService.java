@@ -257,7 +257,7 @@ public class SATCanonizerService extends BasicService {
 				return (c == null) ? Operation.TRUE : c;
 			}
 		}
-
+		
 		private boolean isFirstExpNegtive(Operation ex) {
 			while (ex != null && ex.getOperator() != Operation.Operator.MUL) {
 				Expression op0 = ex.getOperand(0);

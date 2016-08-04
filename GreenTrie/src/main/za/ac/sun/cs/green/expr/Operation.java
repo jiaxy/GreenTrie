@@ -5,8 +5,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class Operation extends Expression {
 	
+	@JsonIgnore
 	List<Operation> imply=new ArrayList<Operation>(); // the atom operation , as an implication tree.
 	
 	private static final long serialVersionUID = 1L;
@@ -138,7 +145,14 @@ public class Operation extends Expression {
 
 	private Operator operator;
 
-	private final Expression[] operands;
+	@JsonIgnore
+	private Expression[] operands;
+	
+	public Operation() {
+		super();
+		operands=null;
+	}
+	
 
 	public Operation(final Operator operator, Expression... operands) {
 		this.operator = operator;
@@ -148,7 +162,16 @@ public class Operation extends Expression {
 	public Operator getOperator() {
 		return operator;
 	}
+	
+	//the reference to operands, to support JSON serialization
+	public Expression[] getOperandsRef(){
+		return operands;
+	}
 
+	public void setOperandsRef(Expression[] operands){
+		this.operands= operands;
+	}
+	
 	public Iterable<Expression> getOperands() {
 		return new Iterable<Expression>() {
 			@Override

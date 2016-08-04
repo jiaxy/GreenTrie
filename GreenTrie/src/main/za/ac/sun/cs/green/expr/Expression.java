@@ -2,7 +2,11 @@ package za.ac.sun.cs.green.expr;
 
 import java.io.Serializable;
 
-public abstract class Expression implements Comparable<Expression>,Serializable {
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+public abstract class Expression implements Comparable<Expression>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
