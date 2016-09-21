@@ -11,10 +11,6 @@ vm.storage.class=nil
 
 #log.level=config
 
-#symbolic.concolic=true
-#symbolic.concolic.MAX_TRIES=3
-#symbolic.debug=on
-
 vm.insn_factory.class=gov.nasa.jpf.symbc.SymbolicInstructionFactory
 #symbolic.method=rjc.Main0(sym#sym#sym#sym)
 symbolic.method=rjc.rjc.MainSymbolic(sym#sym#sym#sym#sym#sym#con#con)
@@ -23,34 +19,11 @@ symbolic.method=rjc.rjc.MainSymbolic(sym#sym#sym#sym#sym#sym#con#con)
 #symbolic.minreal=-100.0
 #symbolic.maxreal=100.0
 #symbolic.undefined=0
-#search.depth_limit=50
+search.depth_limit=20
 listener=gov.nasa.jpf.symbc.SymbolicListener
 #listener=gov.nasa.jpf.symbc.sequences.SymbolicSequenceListener
 
-symbolic.debug=on
 #report.publisher=console
 symbolic.dp=coral
-coral.iterations=3000
-choco.time_bound=2000000
-
-symbolic.green = false
-green.taskmanager = za.ac.sun.cs.green.taskmanager.ParallelTaskManager
-
-#green.store = za.ac.sun.cs.green.store.redis.RedisStore
-green.store =cn.edu.whu.sklse.greentrie.store.TrieStore
-
-green.services = sat
-green.service.sat = (slice (canonize coral))
-green.service.sat.slice = za.ac.sun.cs.green.service.slicer.SATSlicerService
-#green.service.sat.canonize = za.ac.sun.cs.green.service.canonizer.SATCanonizerService
-green.service.sat.canonize = cn.edu.whu.sklse.greentrie.canolize.SATCanonizerService
-#green.service.sat.choco = za.ac.sun.cs.green.service.choco.SATChocoService
-green.service.sat.cvc3 = za.ac.sun.cs.green.service.cvc3.SATCVC3Service
-green.service.sat.coral = cn.edu.whu.sklse.greentrie.coral.SATCoralService
-green.service.sat.z3 = cn.edu.whu.sklse.greentrie.z3.SATZ3JavaService
-#green.service.sat.z3 = za.ac.sun.cs.green.service.z3.SATZ3JavaService
-
-
-#listener = .symbc.GreenListener
-
+#choco.time_bound=200000000
 

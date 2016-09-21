@@ -20,7 +20,7 @@ import za.ac.sun.cs.green.expr.RealConstant;
 import za.ac.sun.cs.green.expr.RealVariable;
 import za.ac.sun.cs.green.util.Configuration;
 
-public class SATCanonizerTest {
+public class VarInsensibleCanonizerTest {
 
 	public static Green solver;
 
@@ -74,33 +74,33 @@ public class SATCanonizerTest {
 
 	@Test
 	public void test01() {
-		IntVariable v = new IntVariable("aa", 0, 99);
+		IntVariable v = new IntVariable("v1", 0, 99);
 		IntConstant c = new IntConstant(0);
 		Operation o = new Operation(Operation.Operator.EQ, v, c);
-		check(o, "aa==0", "1*v==0");
+		check(o, "v1==0", "1*v==0");
 	}
 
 	@Test
 	public void test02() {
-		IntVariable v1 = new IntVariable("aa", 0, 99);
+		IntVariable v1 = new IntVariable("v1", 0, 99);
 		IntConstant c1 = new IntConstant(0);
 		Operation o1 = new Operation(Operation.Operator.EQ, v1, c1);
-		IntVariable v2 = new IntVariable("bb", 0, 99);
+		IntVariable v2 = new IntVariable("v2", 0, 99);
 		IntConstant c2 = new IntConstant(1);
 		Operation o2 = new Operation(Operation.Operator.NE, v2, c2);
 		Operation o3 = new Operation(Operation.Operator.AND, o1, o2);
-		check(o3, "(aa==0)&&(bb!=1)", "1*v==0", "1*v+-1!=0");
+		check(o3, "(v1==0)&&(v2!=1)", "1*v==0", "1*v+-1!=0");
 	}
 
 	@Test
 	public void test03() {
-		IntVariable v1 = new IntVariable("aa", 0, 99);
+		IntVariable v1 = new IntVariable("v1", 0, 99);
 		IntConstant c1 = new IntConstant(0);
 		Operation o1 = new Operation(Operation.Operator.EQ, v1, c1);
-		IntVariable v2 = new IntVariable("bb", 0, 99);
+		IntVariable v2 = new IntVariable("v2", 0, 99);
 		IntConstant c2 = new IntConstant(1);
 		Operation o2 = new Operation(Operation.Operator.NE, v2, c2);
-		check(o1, o2, "(aa==0)&&(bb!=1)", "1*v==0");
+		check(o1, o2, "(v1==0)&&(v2!=1)", "1*v==0");
 	}
 
 	@Test
@@ -229,23 +229,23 @@ public class SATCanonizerTest {
 	public void test13() {
 		IntConstant c1 = new IntConstant(2);
 		IntConstant c2 = new IntConstant(3);
-		IntVariable v1 = new IntVariable("aa", 0, 99);
-		IntVariable v2 = new IntVariable("bb", 0, 99);
+		IntVariable v1 = new IntVariable("v1", 0, 99);
+		IntVariable v2 = new IntVariable("v2", 0, 99);
 		Operation o1 = new Operation(Operation.Operator.ADD, c1, c2);
 		Operation o2 = new Operation(Operation.Operator.MUL, v1, o1);
 		Operation o3 = new Operation(Operation.Operator.LT, o2, v2);
-		check(o3, "(aa*(2+3))<bb", "5*v+-1*v+1<=0");
+		check(o3, "(v1*(2+3))<v2", "5*v+-1*v+1<=0");
 	}
 
 	@Test
 	public void test14() {
 		IntConstant c1 = new IntConstant(2);
-		IntVariable v1 = new IntVariable("aa", 0, 99);
-		IntVariable v2 = new IntVariable("bb", 0, 99);
-		Operation o1 = new Operation(Operation.Operator.SUB, v1, v2);
+		IntVariable v1 = new IntVariable("v1", 0, 99);
+		IntVariable v2 = new IntVariable("v2", 0, 99);
+		Operation o1 = new Operation(Operation.Operator.ADD, v1, v2);
 		Operation o2 = new Operation(Operation.Operator.MUL, o1, c1);
 		Operation o3 = new Operation(Operation.Operator.LT, o2, v1);
-		check(o3, "((aa-bb)*2)<aa", "1*v+-2*v+1<=0");
+		check(o3, "((v1+v2)*2)<v1", "1*v+2*v+1<=0");
 	}
 
 	@Test

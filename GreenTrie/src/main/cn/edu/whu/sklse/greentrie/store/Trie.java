@@ -283,6 +283,9 @@ public class Trie implements Serializable {
 		int pathCount=0;
 		for (Operation o : lastopList) {
 			List<TrieNode> states = this.expPositions.get(o);
+			if(states==null){
+				return false;
+			}
 			for (TrieNode s : states) {
 //				
 //				if(s.getLogicDepth()<logicDepthList.get(size)-1){
