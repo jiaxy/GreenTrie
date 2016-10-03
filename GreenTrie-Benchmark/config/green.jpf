@@ -1,6 +1,8 @@
 classpath = bin
 sourcepath = src
 
+search.multiple_errors=true
+
 symbolic.green = true
 green.taskmanager = za.ac.sun.cs.green.taskmanager.ParallelTaskManager
 

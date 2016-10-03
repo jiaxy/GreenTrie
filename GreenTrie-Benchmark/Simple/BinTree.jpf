@@ -1,0 +1,8 @@
+#@include= ../config/green.jpf
+@include= ../config/greentrie.jpf
+
+target=org.sklse.BinTree
+symbolic.method=org.sklse.BinTree.add(sym)
+symbolic.min_int = 0
+symbolic.max_int = 9
+

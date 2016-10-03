@@ -1,0 +1,9 @@
+classpath = bin
+sourcepath = src
+
+search.multiple_errors=true
+
+
+symbolic.dp=z3
+vm.storage.class=nil
+

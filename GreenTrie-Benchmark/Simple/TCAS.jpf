@@ -1,0 +1,8 @@
+#@include= ../config/green.jpf
+@include= ../config/greentrie.jpf
+
+
+target=org.sklse.TCAS
+symbolic.method= org.sklse.TCAS.startTcas(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
+symbolic.min_int = 0
+symbolic.max_int = 1073741824

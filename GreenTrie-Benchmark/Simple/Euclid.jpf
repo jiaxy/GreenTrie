@@ -1,0 +1,10 @@
+#@include= ../config/green.jpf
+@include= ../config/greentrie.jpf
+
+target=org.sklse.Euclid
+symbolic.method=org.sklse.Euclid.gcd(sym#sym);
+symbolic.min_int = 0
+symbolic.max_int = 9
+
+
+search.depth_limit = 12

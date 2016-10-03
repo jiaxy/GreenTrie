@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="config"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="src" path="ApacheCLI"/>
+	<classpathentry kind="src" path="NanoXML"/>
+	<classpathentry kind="src" path="Siena"/>
+	<classpathentry kind="src" path="ApacheCommonMath"/>
+	<classpathentry kind="src" path="Apollo"/>
+	<classpathentry kind="src" path="RUGRAT"/>
+	<classpathentry kind="src" path="TSAFE"/>
+	<classpathentry kind="src" path="Simple"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/GreenTrie"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jpf-symbc"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jpf-core"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/green.jar"/>
+	<classpathentry kind="lib" path="TSAFE/lib/figio.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

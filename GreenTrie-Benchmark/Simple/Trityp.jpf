@@ -1,0 +1,8 @@
+#@include= ../config/green.jpf
+@include= ../config/greentrie.jpf
+
+target=org.sklse.Trityp
+symbolic.method=org.sklse.Trityp.classify(sym#sym#sym);
+symbolic.min_int = 0
+symbolic.max_int = 1073741824
+

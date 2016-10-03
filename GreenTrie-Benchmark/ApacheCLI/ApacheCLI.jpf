@@ -1,0 +1,8 @@
+#@include= ../config/green.jpf
+#@include= ../config/greentrie.jpf
+@include= ../config/nocache.jpf
+
+target=CLI
+symbolic.method= CLI.mainProcess(sym#sym#sym#sym#sym#sym#sym#sym#sym)
+symbolic.min_int = 0
+symbolic.max_int = 255
