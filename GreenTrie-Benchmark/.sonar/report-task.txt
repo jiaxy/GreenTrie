@@ -1,0 +1,5 @@
+projectKey=jia:GreenTrie-Benchmark
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/jia:GreenTrie-Benchmark
+ceTaskId=AVi1ZsbLlPlGFRkGCW25
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVi1ZsbLlPlGFRkGCW25

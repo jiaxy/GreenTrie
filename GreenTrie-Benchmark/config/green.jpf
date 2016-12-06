@@ -1,7 +1,3 @@
-classpath = bin
-sourcepath = src
-
-search.multiple_errors=true
 
 symbolic.green = true
 green.taskmanager = za.ac.sun.cs.green.taskmanager.ParallelTaskManager
@@ -16,6 +12,4 @@ green.service.sat.choco = za.ac.sun.cs.green.service.choco.SATChocoService
 green.service.sat.cvc3 = za.ac.sun.cs.green.service.cvc3.SATCVC3Service
 green.service.sat.z3 =za.ac.sun.cs.green.service.z3.SATZ3JavaService
 
-symbolic.dp=z3
-vm.storage.class=nil
 listener = .symbc.GreenListener

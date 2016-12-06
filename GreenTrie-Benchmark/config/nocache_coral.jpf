@@ -1,0 +1,10 @@
+classpath = bin
+sourcepath = src
+
+search.multiple_errors=true
+
+
+symbolic.dp=coral
+vm.storage.class=nil
+
+listener = .symbc.SymbolicListener

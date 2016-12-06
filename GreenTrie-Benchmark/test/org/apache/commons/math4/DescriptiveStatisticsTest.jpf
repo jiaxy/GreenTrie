@@ -5,7 +5,7 @@ classpath = bin
 sourcepath = src
 
 symbolic.green = false
-
+symbolic.dp=coral
 
 target=org.apache.commons.math4.DescriptiveStatisticsTest
 symbolic.method=org.apache.commons.math4.DescriptiveStatisticsTest.getDeviation(sym)

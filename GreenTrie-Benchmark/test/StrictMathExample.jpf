@@ -1,0 +1,7 @@
+@include= ../config/common.jpf
+#@include= ../config/nocache.jpf
+
+site=config/site.properties
+vm.extra_startup_classes=java.lang.StrictMath
+target = StrictMathExample
+symbolic.method=StrictMathExample.computeTan2(sym)

@@ -87,6 +87,7 @@ class BinomialHeap {
 			int min = x.key;
 
 			while (x != null) {
+				Debug.getSolvedPC();
 				if (x.key < min) {
 					y = x;
 					min = x.key;

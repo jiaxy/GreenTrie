@@ -1,37 +1,20 @@
 package org.apache.commons.math4;
 
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import util.SPFLaunchor;
 
 public class DescriptiveStatisticsTest {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// Get a DescriptiveStatistics instance
-		DescriptiveStatistics stats = new DescriptiveStatistics();
+		String target="org.apache.commons.math4.DescriptiveStatisticsDriver";
+		String method="org.apache.commons.math4.DescriptiveStatisticsDriver.getDeviation(sym)";
+//		
+		
+//		String target="StrictMathExample";
+//		String method="StrictMathExample.computeTan2(sym)";
+		
+		
+		SPFLaunchor.runSPF(target, method, SPFLaunchor.JPF_ARGS_NOCACHE_CORAL);
 
-		double[] inputArray =new double[]{10,20,24,103.2};
-		// Add the data from the array
-		for( int i = 0; i < inputArray.length; i++) {
-		        stats.addValue(inputArray[i]);
-		}
-
-		// Compute some statistics
-		double mean = stats.getMean();
-		double std = getDeviation(inputArray);
-		double median = stats.getPercentile(50);
-		System.out.println("mean:"+mean+" std:"+std+" median:"+median);
 	}
-
-	private static double getDeviation(double[] inputArray) {
-		DescriptiveStatistics stats = new DescriptiveStatistics();
-		for( int i = 0; i < inputArray.length; i++) {
-	        stats.addValue(inputArray[i]);
-	}
-		return stats.getStandardDeviation();
-	}
-	
-	
-	
-	
 
 }

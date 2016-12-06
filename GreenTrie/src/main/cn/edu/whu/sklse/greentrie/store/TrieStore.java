@@ -26,36 +26,21 @@ import za.ac.sun.cs.green.store.ExpressionStore;
 import za.ac.sun.cs.green.util.Reporter;
 
 public class TrieStore implements ExpressionStore {
-	public static Properties config = new Properties();
-	public static String basePath = "store/constraint";
+	static Properties config = new Properties();
+	static String basePath = "store/constraint";
 	Trie satisfiableTrie = null;
 	Trie unsatisfiableTrie = null;
-//	long maxMatchTime = 0;
-//	long maxSATTime = 0;
-//	long maxUNSATTime = 0;
-//	long maxMissMatchTime = 0;
-//	long satCount = 0;
-//	long unsatCount = 0;
-//	long misCount = 0;
-//	long satQueryTime = 0;
-//	long unsatQueryTime = 0;
-//	long missMatchTime = 0;
-//	long totalQueryCount = 0;
-//	long totalQueryTime = 0;
-//	long RISBuildTime = 0;
-//	long SATTravel_time = 0;
 	long totalSaveCount = 0;
 	long totalSaveTime = 0;
 
 	Map<String, Object> maxSATReport = null;
 	Map<String, Object> maxUNSATReport = null;
 
-	// ConstraintCache trieCache = null;
 	long loadTime = 0;
 	String satSolver="";
 	
 
-	List<String> UNSATExp = new ArrayList<String>();
+	List<String> unsatExp = new ArrayList<String>();
 
 	public TrieStore(Green solver, Properties conf) {
 		super();
@@ -68,9 +53,9 @@ public class TrieStore implements ExpressionStore {
 		}else if(s.contains("coral")){
 			satSolver="coral";
 		}
-		String basePath = (String) TrieStore.config.get("constraint.store.basePath");
-		if (basePath != null) {
-			TrieStore.basePath = basePath;
+		String base = (String) TrieStore.config.get("constraint.store.basePath");
+		if (base != null) {
+			TrieStore.basePath = base;
 		}
 		satisfiableTrie = (Trie) FileUtil.readObject(TrieStore.basePath, "satisfiableTrie");
 		unsatisfiableTrie = (Trie) FileUtil.readObject(TrieStore.basePath, "unsatisfiableTrie");
@@ -80,7 +65,7 @@ public class TrieStore implements ExpressionStore {
 		if (unsatisfiableTrie == null) {
 			unsatisfiableTrie = new Trie();
 		}
-		// config.setProperty("satisfiableTrie", "false");
+
 	}
 
 	@Override
@@ -91,88 +76,57 @@ public class TrieStore implements ExpressionStore {
 
 	@Override
 	public void report(Reporter reporter) {
-//		reporter.report(getClass().getSimpleName(), "totalSave_Count_Time = " + this.totalSaveCount + ","
-//				+ totalSaveTime);
-//		reporter.report(getClass().getSimpleName(), "totalQuery_Count_Time = " + this.totalQueryCount + ","
-//				+ totalQueryTime);
-//		reporter.report(getClass().getSimpleName(), "maxMatchTime = " + maxMatchTime);
-//		reporter.report(getClass().getSimpleName(), "maxMissTime = " + maxMissMatchTime);
-//		reporter.report(getClass().getSimpleName(), "maxSATTime = " + maxSATTime);
-//		reporter.report(getClass().getSimpleName(), "maxUNSATTime = " + maxUNSATTime);
-//		reporter.report(getClass().getSimpleName(), "maxSATReport = " + maxSATReport);
-//		reporter.report(getClass().getSimpleName(), "maxUNSATReport = " + maxUNSATReport);
-//
-//		reporter.report(getClass().getSimpleName(), "SAT_Count_Time = " + satCount + "," + satQueryTime);
-//		reporter.report(getClass().getSimpleName(), "SAT_RISBuildTime = " + RISBuildTime);
-//		reporter.report(getClass().getSimpleName(), "SAT_Travel_time = " + SATTravel_time);
-//		reporter.report(getClass().getSimpleName(), "UNSA_Count_Time = " + unsatCount + "," + unsatQueryTime);
-//		reporter.report(getClass().getSimpleName(), "MISS_Count_Time = " + misCount + "," + missMatchTime);
-//
-//		reporter.report(getClass().getSimpleName(), "SAT_ConstraintCount = " + satisfiableTrie.getPatternCount());
-//		reporter.report(getClass().getSimpleName(), "UNSAT_ConstraintCount = " + unsatisfiableTrie.getPatternCount());
-//		// reporter.report(getClass().getSimpleName(), "SAT_ExpressionCount = "
-//		// + satisfiableTrie.getExpMap().size());
-//		// reporter.report(getClass().getSimpleName(),
-//		// "UNSAT_ExpressionCount = " + unsatisfiableTrie.getExpMap().size());
-//		reporter.report(getClass().getSimpleName(), "SAT_ImplySubGraphCount = "
-//				+ satisfiableTrie.getImplicationTreeHeads().size());
-//		reporter.report(getClass().getSimpleName(), "UNSAT_ImplySubGraphCount = "
-//				+ unsatisfiableTrie.getImplicationTreeHeads().size());
-		// String m="";
-		
-//		 for(String s:UNSATExp){
-//			 System.out.println(s);
-//		 }
-		// reporter.report(getClass().getSimpleName(), "UNSATExp = " +m);
+		//print the report!
 	}
 
 	@Override
 	public Object get(String key) {
-		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String getString(String key) {
-		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Boolean getBoolean(String key) {
-		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void put(String key, Serializable value) {
-		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Integer getInteger(String key) {
-		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Long getLong(String key) {
-		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Float getFloat(String key) {
-		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Double getDouble(String key) {
-		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
+		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public Apint getApfloatInteger(String key) {
-		throw new UnsupportedOperationException("Sorry, TrieStore does not support this operation!");
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Boolean getBoolean(Expression exp) {
-		Boolean result = null;
+		Boolean result;
 		if (!(exp instanceof Operation)) {
 			return null;
 		}
@@ -196,67 +150,6 @@ public class TrieStore implements ExpressionStore {
 			System.out.println("found no result for:" + exp);
 			return null;
 		}
-		
-		//(expList, (Operation) exp);
-//		try {
-//			// Collections.sort(expList);
-//			expList = new Reducer().reduce(expList);
-//			SubSetTask subSetTask = new SubSetTask(unsatisfiableTrie, expList);
-//			FutureTask<Boolean> task1 = new FutureTask<Boolean>(subSetTask);
-//			SuperSetTask superSetTask = new SuperSetTask(satisfiableTrie, expList);
-//			FutureTask<Boolean> task2 = new FutureTask<Boolean>(superSetTask);
-//			task1.run();
-//			task2.run();
-//			if (task1.get()) {
-//				unsatCount++;
-//				long t1 = System.currentTimeMillis() - t0;
-//				unsatQueryTime += t1;
-//				if (t1 > this.maxUNSATTime) {
-//					this.maxUNSATTime = t1;
-//					this.maxUNSATReport = subSetTask.report;
-//				}
-//				// this.maxUNSATTime=Math.max(this.maxUNSATTime,
-//				// System.currentTimeMillis()-t0);
-//				result = false;
-//			} else if (task2.get()) {
-//				satCount++;
-////				long t1 = System.currentTimeMillis() - t0;
-////				long reverseImplySet_buildTime = (Long) superSetTask.report.get("reverseImplySet_buildTime");
-////				long travel_time = (Long) superSetTask.report.get("travel_time");
-//				// long total_time=(Long) superSetTask.report.get("total_time");
-////				satQueryTime += t1;
-////				this.SATTravel_time += travel_time;
-////				this.RISBuildTime += reverseImplySet_buildTime;
-////				if (t1 > this.maxSATTime) {
-////					this.maxSATTime = t1;
-////					this.maxSATReport = superSetTask.report;
-////				}
-//				result = true;
-//			}
-//
-//			if (result == null) {
-//				
-//				this.misCount++;
-//				this.missMatchTime += System.currentTimeMillis() - t0;
-//				this.maxMissMatchTime = Math.max(this.maxMissMatchTime, System.currentTimeMillis() - t0);
-//				// this.missExp.add(exp.toString());
-//				System.out.println("cannot find the result for :" + exp);
-//			} else {
-//				System.out.println("found " + result + "  result for:" + exp);
-//			}
-//
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (ExecutionException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} finally {
-//			this.totalQueryCount++;
-//			this.totalQueryTime += System.currentTimeMillis() - t0;
-//		}
-//		System.out.println("found sovling result " + result + " for : " + exp);
-//		return result;
 	}
 
 	@Override

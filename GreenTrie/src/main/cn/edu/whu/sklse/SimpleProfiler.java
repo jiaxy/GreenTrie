@@ -26,9 +26,12 @@ public class SimpleProfiler {
 
   public static final boolean PROFILE = true;
   
-  public static final Map<String,Long> cumulated = new HashMap<String, Long>();
-  public static final Map<String,Long> pending = new HashMap<String, Long>();
+  static final Map<String,Long> cumulated = new HashMap<String, Long>();
+  static final Map<String,Long> pending = new HashMap<String, Long>();
           
+  private SimpleProfiler(){
+	  
+  }
   
   public static void start(String name) {
     if (!PROFILE) {

@@ -11,8 +11,12 @@ import za.ac.sun.cs.green.expr.RealConstant;
 import za.ac.sun.cs.green.expr.RealVariable;
 
 public class NumberUtil {
+	
+	private NumberUtil(){
+		
+	}
 
-	static public Number add(Number a, Number b) {
+	public static  Number add(Number a, Number b) {
 		if (a instanceof Integer && b instanceof Integer) {
 			return a.intValue() + b.intValue();
 		}
@@ -23,10 +27,10 @@ public class NumberUtil {
 		} catch (FractionConversionException e) {
 			e.printStackTrace();
 		}
-		throw new RuntimeException("cannot add two number:" + a + "," + b);
+		throw new IllegalArgumentException("cannot add two number:" + a + "," + b);
 	}
 
-	static public Number multiply(Number a, Number b) {
+	public static  Number multiply(Number a, Number b) {
 		if (a instanceof Integer && b instanceof Integer) {
 			return a.intValue() * b.intValue();
 		}
@@ -55,7 +59,7 @@ public class NumberUtil {
 		throw new RuntimeException("cannot multiply two number:" + a + "," + b);
 	}
 
-	static public Number div(Number a, Number b) {
+	public static  Number div(Number a, Number b) {
 		if (a instanceof Integer && b instanceof Integer) {
 			return a.intValue() / b.intValue();
 		}
@@ -66,10 +70,10 @@ public class NumberUtil {
 		} catch (FractionConversionException e) {
 			e.printStackTrace();
 		}
-		throw new RuntimeException("cannot divide two number:" + a + "," + b);
+		throw new IllegalArgumentException("cannot divide two number:" + a + "," + b);
 	}
 
-	static public double compare(Number a, Number b) {
+	public static  double compare(Number a, Number b) {
 		if (a.equals(b)) {
 			return 0;
 		}
@@ -81,7 +85,7 @@ public class NumberUtil {
 		return sub(a, b).doubleValue();
 	}
 
-	static public Number sub(Number a, Number b) {
+	public static  Number sub(Number a, Number b) {
 		if (a instanceof Integer && b instanceof Integer) {
 			return a.intValue() - b.intValue();
 		}
@@ -92,10 +96,10 @@ public class NumberUtil {
 		} catch (FractionConversionException e) {
 			e.printStackTrace();
 		}
-		throw new RuntimeException("cannot subtract two number:" + a + "," + b);
+		throw new IllegalArgumentException("cannot subtract two number:" + a + "," + b);
 	}
 
-	static public Number getValue(Constant con) {
+	public static  Number getValue(Constant con) {
 		if (con instanceof IntConstant) {
 			return ((IntConstant) con).getValue();
 		} else if (con instanceof RealConstant) {
@@ -105,7 +109,7 @@ public class NumberUtil {
 		}
 	}
 
-	static public Constant getConstant(Number num) {
+	public static  Constant getConstant(Number num) {
 		if (num instanceof Integer) {
 			return new IntConstant(num.intValue());
 		} else if (num instanceof Double) {
@@ -113,11 +117,11 @@ public class NumberUtil {
 		} else if (num instanceof Fraction){
 			return new RealConstant((Fraction)num);
 		}else{
-			throw new RuntimeException("cannot create constant for "+num);
+			throw new IllegalArgumentException("cannot create constant for "+num);
 		}
 	}
 
-	static public boolean containtReal(Expression exp) {
+	public static  boolean containtReal(Expression exp) {
 		if (exp instanceof RealConstant || exp instanceof RealVariable) {
 			return true;
 		}

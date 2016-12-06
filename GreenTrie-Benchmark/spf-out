@@ -1,0 +1,49 @@
+Running Symbolic PathFinder ...
+symbolic.dp=choco
+symbolic.string_dp_timeout_ms=0
+symbolic.string_dp=none
+symbolic.choco_time_bound=30000
+symbolic.max_pc_length=2147483647
+symbolic.max_pc_msec=0
+symbolic.min_int=-1000000
+symbolic.max_int=1000000
+symbolic.min_double=-8.0
+symbolic.max_double=7.0
+JavaPathfinder core system v8.0 (rev ${version}) - (C) 2005-2014 United States Government. All rights reserved.
+
+
+====================================================== system under test
+StrictMathExample.main()
+
+====================================================== search started: 16-11-25 下午5:24
+
+====================================================== error 1
+gov.nasa.jpf.vm.NoUncaughtExceptionsProperty
+java.lang.UnsatisfiedLinkError: cannot find native java.lang.StrictMath.tan
+	at java.lang.StrictMath.tan(gov.nasa.jpf.symbc.JPF_java_lang_StrictMath)
+	at StrictMathExample.computeTan(StrictMathExample.java:20)
+	at StrictMathExample.main(StrictMathExample.java:10)
+
+
+====================================================== snapshot #1
+thread java.lang.Thread:{id:0,name:main,status:RUNNING,priority:5,isDaemon:false,lockCount:0,suspendCount:0}
+  call stack:
+	at java.lang.StrictMath.tan(StrictMath.java)
+	at StrictMathExample.computeTan(StrictMathExample.java:20)
+	at StrictMathExample.main(StrictMathExample.java:10)
+
+
+====================================================== results
+error #1: gov.nasa.jpf.vm.NoUncaughtExceptionsProperty "java.lang.UnsatisfiedLinkError: cannot find native..."
+
+====================================================== statistics
+elapsed time:       00:00:01
+states:             new=1,visited=0,backtracked=1,end=0
+search:             maxDepth=1,constraints=0
+choice generators:  thread=1 (signal=0,lock=1,sharedRef=0,threadApi=0,reschedule=0), data=0
+heap:               new=365,released=0,maxLive=0,gcCycles=0
+instructions:       3123
+max memory:         155MB
+loaded code:        classes=65,methods=1376
+
+====================================================== search finished: 16-11-25 下午5:24

@@ -29,7 +29,6 @@ import cn.edu.whu.sklse.greentrie.logic.LogicalRelationUtil;
 public class Reducer {
 
 	public Expression reduce(Expression exp) {
-		//System.out.println("reduce exp list: "+opList);
 		if(exp.equals(Operation.TRUE)||exp.equals(Operation.FALSE)){
 			return exp;
 		}
@@ -49,7 +48,6 @@ public class Reducer {
 
 	public List<Operation> reduce(List<Operation> opList) {
 		Collections.sort(opList);
-		//System.out.println("reduce exp list: "+opList);
 		Map<Expression, Interval> intervalMap = new TreeMap<Expression, Interval>();
 		List<Operation> others = new ArrayList<Operation>();
 		for (Operation op : opList) {
@@ -205,7 +203,8 @@ public class Reducer {
 			double dif1 = NumberUtil.compare(this.max, this.min);
 			if (dif1 < 0) {
 				return false;
-			} else if (dif1 == 0 && (this.maxIsOpen || this.minIsOpen)) {
+			} 
+			if (dif1 == 0 && (this.maxIsOpen || this.minIsOpen)) {
 				return false;
 			}
 			return true;
