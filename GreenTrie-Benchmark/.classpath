@@ -17,7 +17,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/jpf-core"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/green.jar"/>
-	<classpathentry kind="lib" path="TSAFE/lib/figio.jar"/>
-	<classpathentry kind="lib" path="TSAFE/lib/feed_server.jar"/>
+	<classpathentry kind="lib" path="lib/feed_server.jar"/>
+	<classpathentry kind="lib" path="lib/figio.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
