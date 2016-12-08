@@ -40,7 +40,7 @@ public class TrajectorySynthesizer extends ComputationColleagues {
 	/**
 	 * Calculator for distances and lat/long to x,y conversion
 	 */
-	private Calculator calculator;
+	public Calculator calculator;
 
 	/** Sole constructor */
 	public TrajectorySynthesizer(ComputationMediator mediator,

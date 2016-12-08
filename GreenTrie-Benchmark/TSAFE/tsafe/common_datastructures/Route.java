@@ -33,7 +33,7 @@ public class Route {
     /**
      * List of all the fixes in the route
      */
-    private List fixes;
+    public List fixes;
 
     /**
      * Construct an empty route

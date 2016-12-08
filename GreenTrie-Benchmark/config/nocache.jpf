@@ -1,10 +1,14 @@
 classpath = bin
 sourcepath = src
 
-search.multiple_errors=true
 
+symbolic.lazy = true
 
+#the configuration allows to consider all subtypes
+#during the instantiation. All subtypes are considered
+#by default in the aliasing. 
+symbolic.lazy.subtypes = true
+
+search.multiple_errors = true
 symbolic.dp=z3
 vm.storage.class=nil
-
-listener = .symbc.SymbolicListener

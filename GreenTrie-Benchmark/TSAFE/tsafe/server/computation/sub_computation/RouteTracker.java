@@ -36,7 +36,7 @@ import tsafe.server.computation.data.RouteTrack;
 public class RouteTracker extends ComputationColleagues {
 
 	/** Calculator for distances and lat/long to x,y conversion */
-	private Calculator calculator;
+	public Calculator calculator;
 
 	/** Sole Constructor */
 	public RouteTracker(ComputationMediator mediator, Calculator calculator) {
@@ -107,7 +107,7 @@ public class RouteTracker extends ComputationColleagues {
 	/**
 	 * Finds closest point on straight line between l1 and l2 to p
 	 */
-	private Point2D snapPointToRouteSegment(Point2D latLonPoint, Point2D fix1,
+	public Point2D snapPointToRouteSegment(Point2D latLonPoint, Point2D fix1,
 			Point2D fix2, boolean print) {
 		PointXY p = calculator.toXY(latLonPoint, this.mediator.getBounds());
 		PointXY l1 = calculator.toXY(fix1, this.mediator.getBounds());
