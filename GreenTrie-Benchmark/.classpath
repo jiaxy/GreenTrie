@@ -7,7 +7,6 @@
 	<classpathentry kind="src" path="Siena"/>
 	<classpathentry kind="src" path="ApacheCommonMath"/>
 	<classpathentry kind="src" path="Apollo"/>
-	<classpathentry kind="src" path="RUGRAT"/>
 	<classpathentry kind="src" path="TSAFE"/>
 	<classpathentry kind="src" path="Simple"/>
 	<classpathentry kind="src" path="peers"/>
