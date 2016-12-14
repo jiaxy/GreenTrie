@@ -1,4 +1,5 @@
 #@include= ../config/green.jpf
+@include=../config/common.jpf
 @include= ../config/greentrie.jpf
 
 target=org.sklse.BinTree

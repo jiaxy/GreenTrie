@@ -1,0 +1,16 @@
+
+#@include= ../config/green.jpf
+@include= ../config/common.jpf
+#@include= ../config/nocache_coral.jpf
+@include= ../config/greentrie_coral.jpf
+
+target=rjc.RJCMain
+
+symbolic.method=rjc.rjc.MainSymbolic(sym#sym#sym#sym#sym#sym#con#con)
+#symbolic.minint=-500
+#symbolic.maxint=500
+#symbolic.minreal=-100.0
+#symbolic.maxreal=100.0
+#symbolic.undefined=0
+search.depth_limit=20
+
