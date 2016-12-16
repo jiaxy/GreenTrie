@@ -134,6 +134,12 @@ public class TrieStore implements ExpressionStore {
 		// if(exp.toString().equals("((((1*v0)+-1)!=0)&&(((1*v0)+-2)!=0))&&(((1*v0)+0)!=0)")){
 		// System.out.println("stop");
 		// }
+		if(exp.equals(Operation.FALSE)){
+			return false;
+		}
+		if(exp.equals(Operation.TRUE)){
+			return true;
+		}
 		List<Operation> expList = new ArrayList<Operation>();
 		LogicalRelationUtil.splitIntoList(expList, (Operation)exp);
 		expList = new Reducer().reduce(expList);

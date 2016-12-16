@@ -436,5 +436,17 @@ public class SATCanonizerTest {
 		check(o5, "(SIN(((aa-bb)/2.0)/1.0))<1.0", "1.0*SIN0.5*v+-0.5*v+-1.0<0.0");
 	}
 	
+	@Test
+	public void test31() {
+		RealConstant c1 = new RealConstant(2);
+		RealConstant c2 = new RealConstant(1);
+		RealVariable v1 = new RealVariable("aa", 0.0, 99.9);
+		RealVariable v2 = new RealVariable("bb", 0.0, 99.9);
+		Operation o1 = new Operation(Operation.Operator.MUL, v1, v1);
+		Operation o2 = new Operation(Operation.Operator.MUL, v2, o1);
+		Operation o3 = new Operation(Operation.Operator.LT, o2, c2);
+
+		check(o3, "(bb*(aa*aa))<1.0", "1.0*v*v*v+-1.0<0.0");
+	}
 
 }

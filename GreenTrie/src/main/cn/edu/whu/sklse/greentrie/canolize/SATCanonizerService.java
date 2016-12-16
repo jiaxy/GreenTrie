@@ -399,8 +399,8 @@ public class SATCanonizerService extends BasicService {
 						ex=or;
 					}
 					if(ol.getOperator().equals(Operator.MUL)&& ol.getOperand(0) instanceof Constant){
-							coff=NumberUtil.multiply(coff,NumberUtil.getValue((Constant) or.getOperand(0)));
-							ex=new Operation(Operator.MUL,ex,or.getOperand(1));
+							coff=NumberUtil.multiply(coff,NumberUtil.getValue((Constant) ol.getOperand(0)));
+							ex=new Operation(Operator.MUL,ex,ol.getOperand(1));
 					}else{
 						ex=new Operation(Operator.MUL,ex,or);
 					}
@@ -444,11 +444,11 @@ public class SATCanonizerService extends BasicService {
 			case LOG:
 				Operation o=new Operation(op,stack.pop());
 				stack.push(new Operation(Operation.Operator.MUL, NumberUtil.getConstant(1.0), o));
-				
 				break;
 			default:
 				break;
 			}
+			
 		}
 
 		private Operation createCompareExpression(Operation.Operator op, Expression e) {
