@@ -12,22 +12,37 @@ import za.ac.sun.cs.green.expr.RealVariable;
 
 public class NumberUtil {
 	
+	public static final IntConstant ONE=(IntConstant)NumberUtil.getConstant(1);
+	public static final IntConstant ZERO=(IntConstant)NumberUtil.getConstant(0);
+	
 	private NumberUtil(){
 		
 	}
 
 	public static  Number add(Number a, Number b) {
+		
 		if (a instanceof Integer && b instanceof Integer) {
-			return a.intValue() + b.intValue();
+			return (Integer)a + (Integer)b;
 		}
 		try {
 			Fraction av = (a instanceof Fraction) ? (Fraction) a : new Fraction(a.doubleValue());
 			Fraction bv = (b instanceof Fraction) ? (Fraction) b : new Fraction(b.doubleValue());
 			return av.add(bv);
-		} catch (FractionConversionException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new IllegalArgumentException("cannot add two number:" + a + "," + b,e);
 		}
-		throw new IllegalArgumentException("cannot add two number:" + a + "," + b);
+		
+	}
+	
+	public static boolean isZero(Number b){
+		if(b instanceof Integer) {
+			return b.intValue()==0;
+		}
+		if(b instanceof Double){
+			return b.equals(0.0);
+		}
+		throw new IllegalArgumentException("unsurported type for isZero Function:" +b.getClass());
+		
 	}
 
 	public static  Number multiply(Number a, Number b) {
@@ -37,9 +52,9 @@ public class NumberUtil {
 
 		if (a.equals(Double.POSITIVE_INFINITY) || b.equals(Double.POSITIVE_INFINITY)
 				|| a.equals(Double.NEGATIVE_INFINITY) || b.equals(Double.NEGATIVE_INFINITY)) {
-			double v1 = compare(a, 0);
-			double v2 = compare(b, 0);
-			double sig = v1 * v2;
+			int v1 = compare(a, 0);
+			int v2 = compare(b, 0);
+			int sig = v1 * v2;
 			if (sig > 0) {
 				return Double.POSITIVE_INFINITY;
 			} else if (sig == 0) {
@@ -53,10 +68,10 @@ public class NumberUtil {
 			Fraction av = (a instanceof Fraction) ? (Fraction) a : new Fraction(a.doubleValue());
 			Fraction bv = (b instanceof Fraction) ? (Fraction) b : new Fraction(b.doubleValue());
 			return av.multiply(bv);
-		} catch (FractionConversionException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new IllegalArgumentException("cannot multiply two number:" + a + "," + b,e);
 		}
-		throw new RuntimeException("cannot multiply two number:" + a + "," + b);
+		
 	}
 
 	public static  Number div(Number a, Number b) {
@@ -67,13 +82,13 @@ public class NumberUtil {
 			Fraction av = (a instanceof Fraction) ? (Fraction) a : new Fraction(a.doubleValue());
 			Fraction bv = (b instanceof Fraction) ? (Fraction) b : new Fraction(b.doubleValue());
 			return av.divide(bv);
-		} catch (FractionConversionException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new IllegalArgumentException("cannot divide two number:" + a + "," + b,e);
 		}
-		throw new IllegalArgumentException("cannot divide two number:" + a + "," + b);
+		
 	}
 
-	public static  double compare(Number a, Number b) {
+	public static  int compare(Number a, Number b) {
 		if (a.equals(b)) {
 			return 0;
 		}
@@ -82,7 +97,7 @@ public class NumberUtil {
 		} else if (a.equals(Double.POSITIVE_INFINITY) || b.equals(Double.NEGATIVE_INFINITY)) {
 			return +1;
 		}
-		return sub(a, b).doubleValue();
+		return Double.compare(a.doubleValue(),b.doubleValue());
 	}
 
 	public static  Number sub(Number a, Number b) {

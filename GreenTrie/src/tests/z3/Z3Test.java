@@ -10,6 +10,8 @@ import org.junit.Test;
 import z3.JavaExample.TestFailedException;
 
 import com.microsoft.z3.ApplyResult;
+import com.microsoft.z3.ArrayExpr;
+import com.microsoft.z3.ArraySort;
 import com.microsoft.z3.BitVecExpr;
 import com.microsoft.z3.BitVecNum;
 import com.microsoft.z3.BoolExpr;
@@ -77,6 +79,147 @@ public class Z3Test {
 	                .println("disprove: x - 10 <= 0 IFF x <= 10 for (32-bit) machine integers");
 	        disprove(ctx, thm, false);
 	    }
+	
+	
+	   // / A simple array example.
+	@Test
+    public void arrayExample1() throws TestFailedException, Z3Exception
+    {
+        System.out.println("ArrayExample1");
+        Log.append("ArrayExample1");
+
+        Goal g = ctx.mkGoal(true, false, false);
+        ArraySort asort = ctx.mkArraySort(ctx.getIntSort(),
+                ctx.mkBitVecSort(32));
+        ArrayExpr aex = (ArrayExpr) ctx.mkConst(ctx.mkSymbol("MyArray"), asort);
+        Expr sel = ctx.mkSelect(aex, ctx.mkInt(0));
+        g.add(ctx.mkEq(sel, ctx.mkBV(42, 32)));
+        Symbol xs = ctx.mkSymbol("x");
+        IntExpr xc = (IntExpr) ctx.mkConst(xs, ctx.getIntSort());
+
+        Symbol fname = ctx.mkSymbol("f");
+        Sort[] domain = { ctx.getIntSort() };
+        FuncDecl fd = ctx.mkFuncDecl(fname, domain, ctx.getIntSort());
+        Expr[] fargs = { ctx.mkConst(xs, ctx.getIntSort()) };
+        IntExpr fapp = (IntExpr) ctx.mkApp(fd, fargs);
+
+        g.add(ctx.mkEq(ctx.mkAdd(xc, fapp), ctx.mkInt(123)));
+
+        Solver s = ctx.mkSolver();
+        for (BoolExpr a : g.getFormulas())
+            s.add(a);
+        System.out.println("Solver: " + s);
+
+        Status q = s.check();
+        System.out.println("Status: " + q);
+
+        if (q != Status.SATISFIABLE)
+            throw new TestFailedException();
+
+        System.out.println("Model = " + s.getModel());
+
+        System.out.println("Interpretation of MyArray:\n"
+                + s.getModel().getFuncInterp(aex.getFuncDecl()));
+        System.out.println("Interpretation of x:\n"
+                + s.getModel().getConstInterp(xc));
+        System.out.println("Interpretation of f:\n"
+                + s.getModel().getFuncInterp(fd));
+        System.out.println("Interpretation of MyArray as Term:\n"
+                + s.getModel().getFuncInterp(aex.getFuncDecl()));
+    }
+
+    // / Prove <tt>store(a1, i1, v1) = store(a2, i2, v2) implies (i1 = i3 or i2
+    // = i3 or select(a1, i3) = select(a2, i3))</tt>.
+
+    // / <remarks>This example demonstrates how to use the array
+    // theory.</remarks>
+    @Test
+    public void arrayExample2() throws TestFailedException, Z3Exception
+    {
+        System.out.println("ArrayExample2");
+        Log.append("ArrayExample2");
+
+        Sort int_type = ctx.getIntSort();
+        Sort array_type = ctx.mkArraySort(int_type, int_type);
+
+        ArrayExpr a1 = (ArrayExpr) ctx.mkConst("a1", array_type);
+        ArrayExpr a2 = ctx.mkArrayConst("a2", int_type, int_type);
+        Expr i1 = ctx.mkConst("i1", int_type);
+        Expr i2 = ctx.mkConst("i2", int_type);
+        Expr i3 = ctx.mkConst("i3", int_type);
+        Expr v1 = ctx.mkConst("v1", int_type);
+        Expr v2 = ctx.mkConst("v2", int_type);
+
+        Expr st1 = ctx.mkStore(a1, i1, v1);
+        Expr st2 = ctx.mkStore(a2, i2, v2);
+
+        Expr sel1 = ctx.mkSelect(a1, i3);
+        Expr sel2 = ctx.mkSelect(a2, i3);
+
+        /* create antecedent */
+        BoolExpr antecedent = ctx.mkEq(st1, st2);
+
+        /*
+         * create consequent: i1 = i3 or i2 = i3 or select(a1, i3) = select(a2,
+         * i3)
+         */
+        BoolExpr consequent = ctx.mkOr(ctx.mkEq(i1, i3), ctx.mkEq(i2, i3),
+                ctx.mkEq(sel1, sel2));
+
+        /*
+         * prove store(a1, i1, v1) = store(a2, i2, v2) implies (i1 = i3 or i2 =
+         * i3 or select(a1, i3) = select(a2, i3))
+         */
+        BoolExpr thm = ctx.mkImplies(antecedent, consequent);
+        System.out
+                .println("prove: store(a1, i1, v1) = store(a2, i2, v2) implies (i1 = i3 or i2 = i3 or select(a1, i3) = select(a2, i3))");
+        System.out.println(thm);
+        prove(ctx, thm, false);
+    }
+
+    // / Show that <code>distinct(a_0, ... , a_n)</code> is
+    // / unsatisfiable when <code>a_i</code>'s are arrays from boolean to
+    // / boolean and n > 4.
+
+    // / <remarks>This example also shows how to use the <code>distinct</code>
+    // construct.</remarks>
+    @Test
+    public void arrayExample3() throws TestFailedException, Z3Exception
+    {
+        System.out.println("ArrayExample3");
+        Log.append("ArrayExample2");
+
+        for (int n = 2; n <= 5; n++)
+        {
+            System.out.println("n = " + Integer.toString(n));
+
+            Sort bool_type = ctx.mkBoolSort();
+            Sort array_type = ctx.mkArraySort(bool_type, bool_type);
+            Expr[] a = new Expr[n];
+
+            /* create arrays */
+            for (int i = 0; i < n; i++)
+            {
+                a[i] = ctx.mkConst("array_" + Integer.toString(i), array_type);
+            }
+
+            /* assert distinct(a[0], ..., a[n]) */
+            BoolExpr d = ctx.mkDistinct(a);
+            System.out.println(d);
+
+            /* context is satisfiable if n < 5 */
+            Model model = check(ctx, d, n < 5 ? Status.SATISFIABLE
+                    : Status.UNSATISFIABLE);
+            if (n < 5)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    System.out.println(a[i].toString() + " = "
+                            + model.evaluate(a[i], false));
+                }
+            }
+        }
+    }
 	
 	@Test
 	 public void bitvectorExample2() throws TestFailedException, Z3Exception
@@ -643,6 +786,18 @@ public class Z3Test {
 
 		return q;
 	}
+	
+	 Model check(Context ctx, BoolExpr f, Status sat) throws TestFailedException, Z3Exception
+	    {
+	        Solver s = ctx.mkSolver();
+	        s.add(f);
+	        if (s.check() != sat)
+	            throw new TestFailedException();
+	        if (sat == Status.SATISFIABLE)
+	            return s.getModel();
+	        else
+	            return null;
+	    }
 
 	// / Assert the axiom: function f is commutative.
 

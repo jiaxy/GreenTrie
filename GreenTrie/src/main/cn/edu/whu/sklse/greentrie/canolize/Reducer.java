@@ -221,7 +221,7 @@ public class Reducer {
 			}
 			List<Number> validNe1 = new ArrayList<Number>();
 			for (Number n : this.neValues) {
-				Double dif1 = NumberUtil.compare(n, this.min);
+				int dif1 = NumberUtil.compare(n, this.min);
 				if (dif1 < 0) {
 					continue;
 				} else if (dif1 == 0 && !this.minIsOpen) {
@@ -236,7 +236,7 @@ public class Reducer {
 			}
 			Set<Number> valideNe2 = new TreeSet<Number>();
 			for (int i = validNe1.size() - 1; i >= 0; i--) {
-				Double dif2 = NumberUtil.compare(validNe1.get(i), this.max);
+				int dif2 = NumberUtil.compare(validNe1.get(i), this.max);
 				if (dif2 > 0) {
 					continue;
 				} else if (dif2 == 0 && !this.maxIsOpen) {

@@ -107,6 +107,6 @@ public abstract class SATService extends BasicService {
 
 	protected Operation getUnsatCore(Operation op) {
 		return op;
-	};
+	}
 
 }

@@ -210,7 +210,7 @@ public class SATCanonizerTest {
 		Operation o1 = new Operation(Operation.Operator.EQ, v1, c1);
 		IntConstant c2 = new IntConstant(1);
 		Operation o2 = new Operation(Operation.Operator.NE, v1, c2);
-		check(o1, o2, "(aa==0)&&(aa!=1)","1*v+-1!=0", "1*v==0");
+		check(o1, o2, "(aa==0)&&(aa!=1)","1*v==0");
 	}
 
 	@Test
@@ -447,6 +447,19 @@ public class SATCanonizerTest {
 		Operation o3 = new Operation(Operation.Operator.LT, o2, c2);
 
 		check(o3, "(bb*(aa*aa))<1.0", "1.0*v*v*v+-1.0<0.0");
+	}
+	
+	@Test
+	public void test32() {
+		RealConstant c1 = new RealConstant(2);
+		RealConstant c2 = new RealConstant(1);
+		RealVariable v1 = new RealVariable("aa", 0.0, 99.9);
+		RealVariable v2 = new RealVariable("bb", 0.0, 99.9);
+		Operation o1 = new Operation(Operation.Operator.MUL, v1, v1);
+		Operation o2 = new Operation(Operation.Operator.DIV, v2, o1);
+		Operation o3 = new Operation(Operation.Operator.LT, o2, c2);
+
+		check(o3, "(bb/(aa*aa))<1.0", "1.0*v/v*v+-1.0<0.0");
 	}
 
 }
