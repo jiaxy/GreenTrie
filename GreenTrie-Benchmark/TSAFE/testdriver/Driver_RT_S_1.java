@@ -27,13 +27,18 @@ public class Driver_RT_S_1 {
 	
 	public void RT_S_1(RouteTracker routeTracker, Point2D flightPoint, Point2D fix1, Point2D fix2) {
 		
-			Common.assume_RT_S_preconditions_routeTracker(routeTracker);
-			Common.assume_RT_S_preconditions_flightPoint(flightPoint);
-			Common.assume_RT_S_preconditions_fix1(fix1);
-			Common.assume_RT_S_preconditions_etc(flightPoint, fix1, fix2);
-			Point2D snapPoint = routeTracker.snapPointToRouteSegment(flightPoint, fix1, fix2, false);
-			_SNAP_POINT_COLLINEAR_WITH_ROUTE_SEGMENT = collinear(routeTracker, fix1, fix2, snapPoint);
-			assert _SNAP_POINT_COLLINEAR_WITH_ROUTE_SEGMENT;
+			try {
+				Common.assume_RT_S_preconditions_routeTracker(routeTracker);
+				Common.assume_RT_S_preconditions_flightPoint(flightPoint);
+				Common.assume_RT_S_preconditions_fix1(fix1);
+				Common.assume_RT_S_preconditions_etc(flightPoint, fix1, fix2);
+				Point2D snapPoint = routeTracker.snapPointToRouteSegment(flightPoint, fix1, fix2, false);
+				_SNAP_POINT_COLLINEAR_WITH_ROUTE_SEGMENT = collinear(routeTracker, fix1, fix2, snapPoint);
+				assert _SNAP_POINT_COLLINEAR_WITH_ROUTE_SEGMENT;
+			} catch (AssumptionException e) {
+				//ignore
+			}
+			
 		
 	}
 	

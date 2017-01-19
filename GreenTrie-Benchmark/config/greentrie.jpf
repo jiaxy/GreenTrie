@@ -7,7 +7,7 @@ green.store =cn.edu.whu.sklse.greentrie.store.TrieStore
 
 green.services = sat
 green.service.sat = (slice (canonize z3))
-green.service.sat.slice = za.ac.sun.cs.green.service.slicer.SATSlicerService
+green.service.sat.slice = cn.edu.whu.sklse.greentrie.slice.SATSlicerService
 #green.service.sat.canonize = za.ac.sun.cs.green.service.canonizer.SATCanonizerService
 green.service.sat.canonize = cn.edu.whu.sklse.greentrie.canolize.SATCanonizerService
 #green.service.sat.choco = za.ac.sun.cs.green.service.choco.SATChocoService

@@ -1,12 +1,10 @@
 classpath = bin
 sourcepath = src
-
-
-
 vm.peer_packages=gov.nasa.jpf.symbc,gov.nasa.jpf.jvm
 vm.storage.class=nil
-vm.extra_startup_classes=java.lang.StrictMath
 
 search.multiple_errors = true
+
+symbolic.lazy = true
 
 #listener = .symbc.SymbolicListener
